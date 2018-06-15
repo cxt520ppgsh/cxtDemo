@@ -58,7 +58,6 @@ public class VitamioUtil {
                     //缓冲结束
                     case MediaPlayer.MEDIA_INFO_BUFFERING_END:
                         mp.start(); //缓冲结束再播放
-                        controller.show();
                         break;
                     //正在缓冲
                     case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
@@ -74,7 +73,7 @@ public class VitamioUtil {
             });
             videoView.setOnErrorListener((mp, what, extra) -> false);
             videoView.setOnCompletionListener(mp -> {
-                //mp.stop();
+
             });
 
             //待优化
@@ -87,7 +86,8 @@ public class VitamioUtil {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        controller.show();
+                        if(controller != null)
+                        controller.updateProgress();
                     }
                 }
             });

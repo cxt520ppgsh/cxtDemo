@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.intersection.listmodule.entity.ResultList;
 import com.intersection.listmodule.viewholder.BaseViewHolder;
@@ -18,6 +20,9 @@ import com.lukou.publishervideo.R;
 import com.lukou.publishervideo.base.ListRecyclerViewAdapter;
 import com.lukou.publishervideo.bean.PublisherVideo;
 import com.lukou.publishervideo.mvp.home.HomeActivityContract;
+import com.lukou.publishervideo.mvp.home.v.dialog.CommodityDialog;
+import com.lukou.publishervideo.mvp.home.v.dialog.SetAsignerDialog;
+import com.lukou.publishervideo.mvp.home.v.dialog.SetTagDialog;
 import com.lukou.publishervideo.utils.VitamioUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
 
@@ -86,6 +91,7 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
         Button replay;
         @BindView(R.id.playbar)
         RelativeLayout playbar;
+        PublisherVideo publisherVideo;
 
         HomeRvItemViewHolder(View view) {
             super(view);
@@ -93,6 +99,7 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
         }
 
         void setVideo(PublisherVideo video) {
+            this.publisherVideo = video;
             VitamioUtil.initVideo(mContext, videoView, video.getVideoUrl(), playbar, last20Per, next20Per, replay);
         }
 
@@ -110,6 +117,28 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
         void replay() {
             VitamioUtil.replay(videoView, replay);
         }
+
+        @OnClick(R.id.notAds)
+        void notAds() {
+
+        }
+
+        @OnClick(R.id.asigner)
+        void setAsigner() {
+            new SetAsignerDialog(mContext, publisherVideo).show();
+        }
+
+        @OnClick(R.id.isAds)
+        void isAds() {
+            new SetTagDialog(mContext, publisherVideo).show();
+        }
+
+
+        @OnClick(R.id.commondity)
+        void commondity() {
+            new CommodityDialog(mContext, publisherVideo).show();
+        }
+
 
     }
 

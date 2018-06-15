@@ -1,6 +1,7 @@
 package com.lukou.publishervideo.utils.netUtils;
 
 import com.lidao.httpmodule.http.base.HttpResult;
+import com.lukou.publishervideo.bean.Asiginer;
 import com.lukou.publishervideo.bean.PublisherVideo;
 
 import java.util.List;
@@ -32,4 +33,7 @@ public interface ApiService {
                                                                      @Query("end_date")String end_date,
                                                                      @Query("delivery_level") int delivery_level,
                                                                      @Query("asigner")String asigner);
+
+    @GET("publisher/video/asign")
+    Observable<KuaishouHttpResult<Asiginer>> getAsigner();
 }

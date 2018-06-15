@@ -46,8 +46,6 @@ public class HomeActivityPresenter extends BasePresenter<HomeActivityContract.Vi
                 "",
                 0,
                 "")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> rootView.refresh(result.list), throwable -> {
                     Toast.makeText(MainApplication.instance(),"刷新失败",Toast.LENGTH_SHORT).show();
                 }))

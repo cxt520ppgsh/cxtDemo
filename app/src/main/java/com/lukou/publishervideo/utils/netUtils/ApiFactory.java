@@ -5,11 +5,14 @@ import android.content.Context;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import com.lidao.httpmodule.http.BaseHttpService;
 import com.lidao.httpmodule.http.base.HttpParams;
 import com.lukou.publishervideo.BuildConfig;
 import com.lukou.publishervideo.app.MainApplication;
+import com.lukou.publishervideo.bean.Asiginer;
 import com.lukou.publishervideo.bean.PublisherVideo;
 import com.lukou.publishervideo.mvp.home.dagger.scope.HomeActivityScope;
 
@@ -30,6 +33,11 @@ public class ApiFactory extends BaseHttpService {
     public ApiFactory(ApiService apiService) {
         super(MainApplication.instance());
         this.apiService = apiService;
+    }
+
+    <T> Observable.Transformer<T, T> lift() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<Response<ResponseBody>> test() {
@@ -56,7 +64,11 @@ public class ApiFactory extends BaseHttpService {
                 start_date,
                 end_date,
                 delivery_level,
-                asigner);
+                asigner).compose(lift());
+    }
+
+    public Observable<KuaishouHttpResult<Asiginer>> getAsigner() {
+        return apiService.getAsigner().compose(lift());
     }
 
 }

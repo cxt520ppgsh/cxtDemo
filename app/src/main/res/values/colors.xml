@@ -1,10 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6cfd5c</color>
-    <color name="colorPrimaryDark">#ffc600</color>
-    <color name="colorAccent">#fa585a</color>
+    <!-- 快手标签项目  -->
+    <color name="colorPrimary">#18ad9d</color>
+    <color name="colorPrimaryDark">#4d18ad9d</color>
+    <color name="colorAccent">#f8b03e</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="main_dialog_bg">#2b2c2f</color>
+
+    <color name="button_gray">#a7a7a7</color>
+
+    <color name="divider_k">#46ffffff</color>
+
+
+    <color name="text_gray_k">#46afafaf</color>
+    <color name="text_gray_k2">#801f2023</color>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 熊猫优选项目  -->
     <color name="windowBackgroundColor">#ffffff</color>
     <color name="photo_pager_activity_status_bar_color">@color/colorPrimaryDark</color>
 

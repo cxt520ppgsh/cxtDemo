@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mvp.home.v.HomeActivity">
+        <activity
+            android:name=".mvp.home.v.activity.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +24,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="io.vov.vitamio.activity.InitActivity"
+        <activity
+            android:name="io.vov.vitamio.activity.InitActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden"/>
