@@ -1,7 +1,6 @@
 package com.lukou.publishervideo.di.component;
 
 import android.app.Activity;
-import android.app.Application;
 
 import com.lukou.publishervideo.di.module.AppModule;
 import com.lukou.publishervideo.di.module.NetModule;
@@ -14,5 +13,5 @@ import dagger.Component;
 @Component(modules = {AppModule.class, NetModule.class})
 public interface AppComponent {
     void inject(Activity activity);
-    ApiService getApiservice();
+    ApiService provideApiService();
 }

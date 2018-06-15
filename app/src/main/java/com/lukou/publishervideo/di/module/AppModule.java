@@ -1,6 +1,8 @@
 package com.lukou.publishervideo.di.module;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.lukou.publishervideo.utils.netUtils.ApiService;
@@ -26,4 +28,11 @@ public class AppModule {
     public Application provideApplication() {
         return mApplication;
     }
+
+    @Provides
+    @Singleton
+    SharedPreferences providesSharedPreferences(Application application) {
+        return PreferenceManager.getDefaultSharedPreferences(application);
+    }
 }
+

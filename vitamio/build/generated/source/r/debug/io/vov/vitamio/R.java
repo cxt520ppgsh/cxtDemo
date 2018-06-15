@@ -11,6 +11,7 @@ public final class R {
         public static int mediacontroller_bg = 0x7f060001;
         public static int mediacontroller_bg_pressed = 0x7f060002;
         public static int transparent = 0x7f060003;
+        public static int white = 0x7f060004;
     }
     public static final class drawable {
         public static int mediacontroller_button = 0x7f090001;
@@ -27,11 +28,9 @@ public final class R {
         public static int scrubber_track_holo_dark = 0x7f09000c;
     }
     public static final class id {
-        public static int mediacontroller_file_name = 0x7f0c0001;
-        public static int mediacontroller_play_pause = 0x7f0c0002;
-        public static int mediacontroller_seekbar = 0x7f0c0003;
-        public static int mediacontroller_time_current = 0x7f0c0004;
-        public static int mediacontroller_time_total = 0x7f0c0005;
+        public static int mediacontroller_seekbar = 0x7f0c0001;
+        public static int mediacontroller_time_current = 0x7f0c0002;
+        public static int mediacontroller_time_total = 0x7f0c0003;
     }
     public static final class layout {
         public static int mediacontroller = 0x7f0f0001;

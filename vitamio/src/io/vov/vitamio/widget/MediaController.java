@@ -35,6 +35,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -178,6 +179,17 @@ public class MediaController extends FrameLayout {
       initFloatingWindow();
   }
 
+  public MediaController(Context context,boolean fromXml,View container) {
+    super(context);
+    initController(context);
+    mFromXml = fromXml;
+    mRoot = makeControllerView();
+    RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+    mRoot.setLayoutParams(p);
+    ((RelativeLayout)container).addView(mRoot);
+  }
+
+
   private boolean initController(Context context) {
     mContext = context;
     mAM = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
@@ -197,7 +209,7 @@ public class MediaController extends FrameLayout {
     mWindow.setOutsideTouchable(true);
     mAnimStyle = android.R.style.Animation;
   }
-  
+
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public void setWindowLayoutType() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -368,7 +380,7 @@ public class MediaController extends FrameLayout {
       try {
         mHandler.removeMessages(SHOW_PROGRESS);
         if (mFromXml)
-          setVisibility(View.GONE);
+          setVisibility(View.VISIBLE);
         else
           mWindow.dismiss();
       } catch (IllegalArgumentException ex) {
@@ -402,7 +414,6 @@ public class MediaController extends FrameLayout {
       int percent = mPlayer.getBufferPercentage();
       mProgress.setSecondaryProgress(percent * 10);
     }
-
     mDuration = duration;
 
     if (mEndTime != null)
