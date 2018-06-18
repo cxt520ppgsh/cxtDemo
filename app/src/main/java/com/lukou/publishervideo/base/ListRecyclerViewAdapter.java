@@ -2,7 +2,6 @@ package com.lukou.publishervideo.base;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import com.intersection.viewmodule.display.RetryLoadListener;
 import com.lidao.httpmodule.http.HttpException;
 import com.lukou.publishervideo.R;
 import com.lukou.publishervideo.databinding.PageErrorLayoutBinding;
-import com.lukou.publishervideo.mvp.swipeRefresh.MySwipeRefreshLayout;
+import com.lukou.publishervideo.widget.swipeRefresh.MySwipeRefreshLayout;
 
 /**
  * @author sunbinqiang

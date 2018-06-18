@@ -20,7 +20,8 @@
     <LinearLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,71 +29,170 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="53dp"
             android:orientation="horizontal">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/last20Per"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="前 20%" />
+                android:background="@drawable/bottom_bar_selector"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Button
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/last20_enable" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_tiny"
+                    android:text="20"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="%"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/text_gray_k"></View>
+
+            <LinearLayout
                 android:id="@+id/replay"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="从头看" />
+                android:background="@drawable/bottom_bar_selector"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Button
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_tiny"
+                    android:text="从头看"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/text_gray_k"></View>
+            <LinearLayout
                 android:id="@+id/next20Per"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="后 20%" />
-        </LinearLayout>
+                android:background="@drawable/bottom_bar_selector"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <RelativeLayout
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/next20_enable" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_tiny"
+                    android:text="20"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="%"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_gray_k"></View>
+        <FrameLayout
             android:id="@+id/playbar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"></RelativeLayout>
+            android:layout_height="60dp"
+            android:background="@color/white"></FrameLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/notAds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@mipmap/ic_launcher"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="非广告"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/bottomBar"
-        app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
+    <LinearLayout
         android:id="@+id/isAds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@mipmap/ic_launcher"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
         android:gravity="center"
-        android:padding="5dp"
-        android:text="广告"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/notAds"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/notAds"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/is_ads_bt_selecter" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="广告"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notAds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/not_ads_bt_selecter" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="非广告"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
 
     <com.lukou.publishervideo.widget.TextImageView
-        android:gravity="center"
         android:id="@+id/asigner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_medium_20"
         android:drawablePadding="@dimen/margin_small"
         android:drawableRight="@drawable/switch_bt"
+        android:gravity="center"
         android:text="小黑: 200"
         android:textColor="@color/white"
         android:textSize="@dimen/text_large"

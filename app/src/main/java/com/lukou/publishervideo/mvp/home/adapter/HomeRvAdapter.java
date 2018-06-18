@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,8 +24,10 @@ import com.lukou.publishervideo.mvp.home.HomeActivityContract;
 import com.lukou.publishervideo.mvp.home.v.dialog.CommodityDialog;
 import com.lukou.publishervideo.mvp.home.v.dialog.SetAsignerDialog;
 import com.lukou.publishervideo.mvp.home.v.dialog.SetTagDialog;
+import com.lukou.publishervideo.utils.ThreadPoolUtil;
 import com.lukou.publishervideo.utils.VitamioUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
+import com.lukou.publishervideo.widget.VideoRecycleView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +60,14 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
     }
 
     public void setPublisherVideoList(List<PublisherVideo> list) {
-        publisherVideos = list;
+        for (PublisherVideo publisherVideo : list) {
+            publisherVideos.add(publisherVideo);
+        }
         notifyDataSetChanged();
+    }
+
+    public List<PublisherVideo> getPublisherVideoList() {
+        return publisherVideos;
     }
 
     @NonNull
@@ -71,8 +80,13 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
 
     @Override
     public void onBindViewHolder(@NonNull HomeRvItemViewHolder holder, int position) {
-        holder.setVideo(publisherVideos.get(position));
+        holder.setVideoView(publisherVideos.get(position));
+        if (position == 0 && VideoRecycleView.getCurrentPosition() == 0) {
+            holder.setVideoURL(publisherVideos.get(0));
+            VideoRecycleView.setCanScrollToNext(true);
+        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -80,48 +94,59 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
     }
 
 
-    protected class HomeRvItemViewHolder extends RecyclerView.ViewHolder {
+    public class HomeRvItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.videoView)
         VideoView videoView;
         @BindView(R.id.next20Per)
-        Button next20Per;
+        LinearLayout next20Per;
         @BindView(R.id.last20Per)
-        Button last20Per;
+        LinearLayout last20Per;
         @BindView(R.id.replay)
-        Button replay;
+        LinearLayout replay;
         @BindView(R.id.playbar)
-        RelativeLayout playbar;
+        FrameLayout playbar;
         PublisherVideo publisherVideo;
 
         HomeRvItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            this.setIsRecyclable(false);
         }
 
-        void setVideo(PublisherVideo video) {
+        private void setVideoView(PublisherVideo video) {
             this.publisherVideo = video;
             VitamioUtil.initVideo(mContext, videoView, video.getVideoUrl(), playbar, last20Per, next20Per, replay);
         }
 
-        @OnClick(R.id.last20Per)
-        void last20Per() {
-            VitamioUtil.last20per(videoView, last20Per);
+        public void setVideoURL(PublisherVideo video) {
+            if (videoView != null) {
+                videoView.setVideoURI(Uri.parse(video.getVideoUrl()));
+
+                ThreadPoolUtil.getSingleThreadPool().execute(() -> {
+                    while (true) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("sadasdsadas");
+                        if (videoView.getController() != null) {
+                            videoView.getController().show();
+                        }
+
+                    }
+                });
+
+            }
         }
 
-        @OnClick(R.id.next20Per)
-        void next20Per() {
-            VitamioUtil.next20per(videoView, next20Per);
-        }
-
-        @OnClick(R.id.replay)
-        void replay() {
-            VitamioUtil.replay(videoView, replay);
-        }
-
-        @OnClick(R.id.notAds)
-        void notAds() {
+        public void destroyVideoView() {
+            if (videoView != null) {
+                videoView.stopPlayback();
+            }
 
         }
+
 
         @OnClick(R.id.asigner)
         void setAsigner() {

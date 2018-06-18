@@ -448,6 +448,10 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
         attachMediaController();
     }
 
+    public MediaController getController() {
+        return mMediaController;
+    }
+
     public void setMediaBufferingIndicator(View mediaBufferingIndicator) {
         if (mMediaBufferingIndicator != null)
             mMediaBufferingIndicator.setVisibility(View.GONE);

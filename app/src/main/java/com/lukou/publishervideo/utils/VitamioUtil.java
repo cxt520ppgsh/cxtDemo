@@ -9,10 +9,13 @@ import android.view.GestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
 
 import io.vov.vitamio.LibsChecker;
@@ -28,23 +31,23 @@ import io.vov.vitamio.widget.VideoView;
 public class VitamioUtil {
     public static final int SEEK_COMPLEATE = 3;
 
-    public static void initVideo(Context context, VideoView videoView, String url, RelativeLayout playBar, Button last20, Button next20, Button replay) {
+    public static MediaController initVideo(Context context, VideoView videoView, String url, FrameLayout playBar, LinearLayout last20, LinearLayout next20, LinearLayout replay) {
+        MediaController controller = new MediaController(context, true, playBar);
         if (Vitamio.isInitialized(context)) {
             ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) videoView.getLayoutParams();
 
             //float scale = (videoView.getWidth() * 1.00f) / (videoView.getHeight() * 1.00f);
             //videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_FIT_PARENT,scale);
-            videoView.setVideoURI(Uri.parse(url));
-            videoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);
-            MediaController controller = new MediaController(context, true, playBar);
+            //videoView.setVideoURI(Uri.parse(url));
             videoView.setMediaController(controller);
             videoView.setBufferSize(10240);
             videoView.requestFocus();
-            videoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);//高画质
+            videoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);
             videoView.setOnPreparedListener(mediaPlayer -> {
                 mediaPlayer.setPlaybackSpeed(1.0f);
-                //mediaPlayer.setLooping(true);
-                controller.setInstantSeeking(true);
+                mediaPlayer.setLooping(false);
+                mediaPlayer.start();
+                //controller.setInstantSeeking(true);
             });
             videoView.setOnBufferingUpdateListener((mp, percent) -> {
                 //percentTv.setText("已缓冲：" + percent + "%");
@@ -76,39 +79,45 @@ public class VitamioUtil {
 
             });
 
-            //待优化
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        if(controller != null)
-                        controller.updateProgress();
-                    }
-                }
-            });
-            thread.start();
+            setListener(videoView, last20, next20, replay);
         }
+        return controller;
     }
 
-    public static void next20per(VideoView videoView, Button button) {
+    public static void setListener(VideoView videoView, LinearLayout last20, LinearLayout next20, LinearLayout replay) {
+        last20.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                last20per(videoView, last20);
+            }
+        });
+        next20.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                next20per(videoView, next20);
+            }
+        });
+        replay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                replay(videoView, replay);
+            }
+        });
+    }
+
+    public static void next20per(VideoView videoView, LinearLayout button) {
         button.setClickable(false);
         videoView.pause();
         videoView.seekTo((long) (videoView.getCurrentPosition() + (videoView.getDuration() * 0.2)));
-
     }
 
-    public static void last20per(VideoView videoView, Button button) {
+    public static void last20per(VideoView videoView, LinearLayout button) {
         button.setClickable(false);
         videoView.pause();
         videoView.seekTo((long) (videoView.getCurrentPosition() - (videoView.getDuration() * 0.2)));
     }
 
-    public static void replay(VideoView videoView, Button button) {
+    public static void replay(VideoView videoView, LinearLayout button) {
         button.setClickable(false);
         videoView.pause();
         videoView.seekTo(0);

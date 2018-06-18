@@ -7,12 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
- <android.support.v7.widget.RecyclerView
-     android:id="@+id/rv"
-     android:layout_width="match_parent"
-     android:layout_height="match_parent">
-
- </android.support.v7.widget.RecyclerView>
+    <com.lukou.publishervideo.widget.VideoRecycleView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.lukou.publishervideo.widget.VideoRecycleView>
 </android.support.constraint.ConstraintLayout>
 
 

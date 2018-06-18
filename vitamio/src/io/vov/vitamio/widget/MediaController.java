@@ -186,7 +186,7 @@ public class MediaController extends FrameLayout {
         mRoot = makeControllerView();
         RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
         mRoot.setLayoutParams(p);
-        ((RelativeLayout) container).addView(mRoot);
+        ((FrameLayout) container).addView(mRoot);
     }
 
 

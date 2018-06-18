@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 
 public abstract class BaseDialog extends Dialog {
     Context context;
+
     public BaseDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
         this.context = context;
