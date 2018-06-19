@@ -12,6 +12,9 @@ import android.view.WindowManager;
 
 import com.lukou.publishervideo.R;
 import com.lukou.publishervideo.app.MainApplication;
+import com.lukou.publishervideo.di.component.DaggerAppComponent;
+import com.lukou.publishervideo.di.module.AppModule;
+import com.lukou.publishervideo.di.module.NetModule;
 import com.lukou.publishervideo.mvp.home.HomeActivityContract;
 import com.lukou.publishervideo.mvp.home.dagger.component.DaggerHomeActivityComponent;
 import com.lukou.publishervideo.mvp.home.dagger.module.HomeActivityModule;
@@ -28,19 +31,22 @@ public abstract class BaseDialog extends Dialog {
     public BaseDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
         this.context = context;
-        DaggerHomeActivityComponent
-                .builder()
-                .appComponent(MainApplication.instance().getAppComponent())
-                .homeActivityModule(new HomeActivityModule((HomeActivityContract.View) context))
-                .build()
-                .inject(this);
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(setView());
+
         ButterKnife.bind(this);
+
+        DaggerHomeActivityComponent
+                .builder()
+                .appComponent(MainApplication.instance().getAppComponent())
+                .homeActivityModule(new HomeActivityModule((HomeActivityContract.View) context))
+                .build()
+                .inject(this);
 
         Window window = getWindow();
         window.setGravity(Gravity.BOTTOM);

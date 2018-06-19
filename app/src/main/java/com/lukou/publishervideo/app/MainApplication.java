@@ -6,7 +6,6 @@ import com.lukou.publishervideo.di.component.AppComponent;
 import com.lukou.publishervideo.di.component.DaggerAppComponent;
 import com.lukou.publishervideo.di.module.AppModule;
 import com.lukou.publishervideo.di.module.NetModule;
-import com.lukou.publishervideo.utils.ThreadPoolUtil;
 
 public class MainApplication extends Application {
     private AppComponent mAppComponent;
@@ -21,7 +20,6 @@ public class MainApplication extends Application {
                 .appModule(new AppModule(this))
                 .netModule(new NetModule())
                 .build();
-        ThreadPoolUtil.initThreadPool();
     }
 
     public AppComponent getAppComponent() {

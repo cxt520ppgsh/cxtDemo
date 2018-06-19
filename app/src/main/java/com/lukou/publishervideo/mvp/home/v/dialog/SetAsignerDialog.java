@@ -41,16 +41,12 @@ import static android.view.Gravity.CENTER;
 
 public class SetAsignerDialog extends BaseDialog {
     private Context context;
-    private PublisherVideo publisherVideo;
-    @Inject
-    ApiFactory apiFactory;
     @BindView(R.id.ll)
     LinearLayout ll;
 
-    public SetAsignerDialog(Context context, PublisherVideo publisherVideo) {
+    public SetAsignerDialog(Context context) {
         super(context, R.style.main_dialog);
         this.context = context;
-        this.publisherVideo = publisherVideo;
     }
 
     @Override
@@ -60,9 +56,9 @@ public class SetAsignerDialog extends BaseDialog {
 
     @Override
     public void init() {
-        /*apiFactory.getAsigner().subscribe(new Action1<KuaishouHttpResult<Asiginer>>() {
+        ApiFactory.getInstance().getAsigner().subscribe(new Action1<KuaishouHttpResult<Asiginer>>() {
             @Override
-            public void call(KuaishouHttpResult<Asiginer> asiginerKuaishouHttpResult) {
+            public void call(KuaishouHttpResult<Asiginer> httpResult) {
 
             }
         }, new Action1<Throwable>() {
@@ -70,16 +66,20 @@ public class SetAsignerDialog extends BaseDialog {
             public void call(Throwable throwable) {
 
             }
-        });*/
+        });
 
-        List<Asiginer> asiginerList = new ArrayList<>();
-        for (int i = 0; i <= 9; i++) {
-            Asiginer asiginer = new Asiginer();
-            asiginer.setAsignerName("kobe");
-            asiginer.setAsignCnt(222);
-            asiginerList.add(asiginer);
+        //测试
+        {
+            List<Asiginer> asiginerList = new ArrayList<>();
+            for (int i = 0; i <= 9; i++) {
+                Asiginer asiginer = new Asiginer();
+                asiginer.setAsignerName("kobe");
+                asiginer.setAsignCnt(222);
+                asiginerList.add(asiginer);
+            }
+            setLayout(asiginerList);
         }
-        setLayout(asiginerList);
+
 
     }
 

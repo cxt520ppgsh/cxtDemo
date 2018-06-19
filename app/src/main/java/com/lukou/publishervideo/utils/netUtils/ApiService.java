@@ -20,19 +20,17 @@ import retrofit2.Response;
  */
 
 public interface ApiService {
-    @GET("hotWords")
-    Observable<Response<ResponseBody>> test();
 
     @GET("publisher/video")
     Observable<KuaishouHttpResult<PublisherVideo>> getPublisherVideo(@Query("page") int page,
-                                                                     @Query("keyWord")String keyWord,
-                                                                     @Query("sort_field")String sort_field,
-                                                                     @Query("delete_type")int delete_type,
-                                                                     @Query("video_type")int video_type,
-                                                                     @Query("start_date")String start_date,
-                                                                     @Query("end_date")String end_date,
+                                                                     @Query("keyWord") String keyWord,
+                                                                     @Query("sort_field") String sort_field,
+                                                                     @Query("delete_type") int delete_type,
+                                                                     @Query("video_type") int video_type,
+                                                                     @Query("start_date") String start_date,
+                                                                     @Query("end_date") String end_date,
                                                                      @Query("delivery_level") int delivery_level,
-                                                                     @Query("asigner")String asigner);
+                                                                     @Query("asigner") String asigner);
 
     @GET("publisher/video/asign")
     Observable<KuaishouHttpResult<Asiginer>> getAsigner();

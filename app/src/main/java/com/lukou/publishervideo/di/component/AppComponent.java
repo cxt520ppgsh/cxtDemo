@@ -1,6 +1,7 @@
 package com.lukou.publishervideo.di.component;
 
 import android.app.Activity;
+import android.app.Dialog;
 
 import com.lukou.publishervideo.di.module.AppModule;
 import com.lukou.publishervideo.di.module.NetModule;

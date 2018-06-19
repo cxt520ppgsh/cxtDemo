@@ -1,20 +1,9 @@
 package com.lukou.publishervideo.mvp.home.v.activity;
 
-import android.app.Activity;
-import android.net.Uri;
-import android.os.Message;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.SeekBar;
-import android.widget.Toast;
 
 import com.lukou.publishervideo.R;
 import com.lukou.publishervideo.base.BaseActivity;
@@ -25,24 +14,15 @@ import com.lukou.publishervideo.mvp.home.adapter.HomeRvAdapter;
 import com.lukou.publishervideo.mvp.home.dagger.component.DaggerHomeActivityComponent;
 import com.lukou.publishervideo.mvp.home.dagger.module.HomeActivityModule;
 import com.lukou.publishervideo.mvp.home.p.HomeActivityPresenter;
-import com.lukou.publishervideo.utils.ThreadPoolUtil;
-import com.lukou.publishervideo.utils.VitamioUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
 import com.lukou.publishervideo.widget.VideoRecycleView;
 
 
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
-import io.vov.vitamio.LibsChecker;
-import io.vov.vitamio.Vitamio;
-import io.vov.vitamio.utils.Log;
-import io.vov.vitamio.widget.VideoView;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
@@ -75,29 +55,25 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     @Override
     public void initView() {
         initRv();
-        initVitamio();
     }
 
     private void initRv() {
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(homeRvAdapter);
+        rv.setRecyclerListener(new RecyclerView.RecyclerListener() {
+            @Override
+            public void onViewRecycled(RecyclerView.ViewHolder holder) {
+                ((HomeRvAdapter.HomeRvItemViewHolder)holder).destroyVideoView();
+
+            }
+        });
+
+
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == SCROLL_STATE_IDLE) {
-                    //释放非当前item的VideoView资源
-                   /* for (int i = 0; i < rv.getAdapter().getItemCount(); i++) {
-                        if (i == rv.getCurrentPosition()) {
-                            continue;
-                        }
-                        HomeRvAdapter.HomeRvItemViewHolder homeRvItemViewHolder = (HomeRvAdapter.HomeRvItemViewHolder) getViewHolder(i);
-                        if (homeRvItemViewHolder != null) {
-                            homeRvItemViewHolder.destroyVideoView();
-                            System.out.println("asdasd" + i);
-                        }
-                    }*/
-
                     if (rv.getCurrentPosition() < homeRvAdapter.getPublisherVideoList().size()){
                         if (homeRvAdapter.getPublisherVideoList().get(rv.getCurrentPosition()) != null) {
                             View view = rv.getLayoutManager().findViewByPosition((rv.getCurrentPosition()));
@@ -136,13 +112,6 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
         }
         return viewHolder;
 
-    }
-
-    private void initVitamio() {
-        Vitamio.initialize(this);
-        if (!LibsChecker.checkVitamioLibs(this)) {
-            Toast.makeText(this, "加载lib库失败", Toast.LENGTH_SHORT);
-        }
     }
 
     @Override

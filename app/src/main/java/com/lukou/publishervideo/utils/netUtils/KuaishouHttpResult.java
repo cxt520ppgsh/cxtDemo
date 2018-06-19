@@ -15,5 +15,5 @@ public class KuaishouHttpResult<T> {
     public String msg;
     public int code;
     public String title;
-    public List<PublisherVideo> list;
+    public List<T> list;
 }

@@ -35,14 +35,23 @@ public class ApiFactory extends BaseHttpService {
         this.apiService = apiService;
     }
 
+    public static synchronized ApiService getInstance() {
+        if (apiService == null) {
+            final HttpParams httpParams = new HttpParams.Builder(BuildConfig.baseUrl)
+                    .interceptor(new HeaderInterceptor())
+                    //.interceptor(new HttpsScopeInterceptor())
+                    .build();
+            apiService = BaseHttpService.getRetrofit(MainApplication.instance(), httpParams, BuildConfig.DEBUG).create(ApiService.class);
+        }
+        return apiService;
+    }
+
+
     <T> Observable.Transformer<T, T> lift() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<Response<ResponseBody>> test() {
-        return apiService.test();
-    }
 
     public Observable<KuaishouHttpResult<PublisherVideo>> getPublisherVideo(
             int page,

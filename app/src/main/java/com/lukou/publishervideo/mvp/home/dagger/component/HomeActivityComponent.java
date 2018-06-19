@@ -15,5 +15,5 @@ import dagger.Component;
 public interface HomeActivityComponent {
     void inject(HomeActivity activity);
     void inject(Fragment fragment);
-    void inject(Dialog fragment);
+    void inject(Dialog dialog);
 }

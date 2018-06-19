@@ -20,6 +20,7 @@ public class VideoRecycleView extends RecyclerView {
     private float dy = 0;
     private static int currentPosition = 0;
     LinearLayoutManager layoutMgr;
+    //当 当前Item的视频未打标签是设为false阻止上滑到下一个视频，否则设为true
     private static boolean canScrollToNext = false;
 
     public VideoRecycleView(Context context) {
@@ -45,8 +46,10 @@ public class VideoRecycleView extends RecyclerView {
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        switch (e.getAction()) {
+        layoutMgr = (LinearLayoutManager) getLayoutManager();
+        int firstPosition = layoutMgr.findFirstVisibleItemPosition();
 
+        switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 dowxY = e.getY();
                 break;
@@ -58,15 +61,14 @@ public class VideoRecycleView extends RecyclerView {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                layoutMgr = (LinearLayoutManager) getLayoutManager();
-                int firstPosition = layoutMgr.findFirstVisibleItemPosition();
-                if (dy > 0 && dy < ACTION_Y && firstPosition != 0) {
+                if (dy > 0 && dy < ACTION_Y) {
                     currentPosition = firstPosition + 1;
                     smoothScrollToPosition(firstPosition + 1);
                 } else if (dy >= ACTION_Y) {//下滑
                     currentPosition = firstPosition;
                     smoothScrollToPosition(firstPosition);
                 } else if (dy < 0 && dy > -ACTION_Y) {//上滑
+                    currentPosition = firstPosition;
                     smoothScrollToPosition(firstPosition);
                 } else if (dy <= -ACTION_Y) {
                     currentPosition = firstPosition + 1;
