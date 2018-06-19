@@ -38,8 +38,6 @@ import rx.functions.Action1;
 public class SetTagDialog extends BaseDialog {
     private Context context;
     private PublisherVideo publisherVideo;
-    @Inject
-    ApiFactory apiFactory;
     @BindView(R.id.rl)
     RelativeLayout rl;
 

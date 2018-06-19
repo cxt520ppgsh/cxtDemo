@@ -225,23 +225,6 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-
-    <com.lukou.publishervideo.widget.TextImageView
-        android:id="@+id/asigner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_medium_20"
-        android:drawablePadding="@dimen/margin_small"
-        android:drawableRight="@drawable/switch_bt"
-        android:gravity="center"
-        android:text="小黑: 200"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_large"
-        app:drawableRightHeight="14dp"
-        app:drawableRightWidth="14dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/commondity"
         android:layout_width="20dp"

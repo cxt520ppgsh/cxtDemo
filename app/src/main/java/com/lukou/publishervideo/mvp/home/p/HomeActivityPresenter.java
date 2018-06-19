@@ -7,8 +7,10 @@ import android.widget.Toast;
 import com.intersection.listmodule.entity.ResultList;
 import com.lukou.publishervideo.app.MainApplication;
 import com.lukou.publishervideo.base.BasePresenter;
+import com.lukou.publishervideo.bean.Asiginer;
 import com.lukou.publishervideo.bean.PublisherVideo;
 import com.lukou.publishervideo.mvp.home.HomeActivityContract;
+import com.lukou.publishervideo.mvp.home.v.activity.HomeActivity;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
 import com.lukou.publishervideo.utils.netUtils.KuaishouHttpResult;
 
@@ -46,8 +48,8 @@ public class HomeActivityPresenter extends BasePresenter<HomeActivityContract.Vi
                 "",
                 0,
                 "")
-                .subscribe(result -> rootView.refresh(result.list), throwable -> {
-                    Toast.makeText(MainApplication.instance(),"刷新失败",Toast.LENGTH_SHORT).show();
+                .subscribe(result -> rootView.refresh(HomeActivity.INIT_PUBLISH_VIDEO_LIST, result.list), throwable -> {
+                    Toast.makeText(MainApplication.instance(), "刷新失败", Toast.LENGTH_SHORT).show();
                 }))
         ;
     }

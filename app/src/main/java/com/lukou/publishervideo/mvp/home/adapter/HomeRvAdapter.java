@@ -119,16 +119,12 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
             }
         }
 
-        @OnClick(R.id.asigner)
-        void setAsigner() {
-            new SetAsignerDialog(mContext).show();
-        }
-
         @OnClick(R.id.isAds_bt)
         void isAds_bt_Click() {
             new SetTagDialog(mContext, publisherVideo).show();
 
         }
+
         @OnClick(R.id.notAds_bt)
         void notAds_bt_Click() {
 
@@ -141,16 +137,18 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
         }
 
         @OnClick(R.id.next20Per)
-        void next20Click(){
-            VideoPlayerUtil.next20per(videoView,next20Per);
+        void next20Click() {
+            VideoPlayerUtil.next20per(videoView, next20Per);
         }
+
         @OnClick(R.id.last20Per)
-        void last20Click(){
-            VideoPlayerUtil.last20per(videoView,last20Per);
+        void last20Click() {
+            VideoPlayerUtil.last20per(videoView, last20Per);
         }
+
         @OnClick(R.id.replay)
-        void replayClick(){
-            VideoPlayerUtil.replay(videoView,replay);
+        void replayClick() {
+            VideoPlayerUtil.replay(videoView, replay);
         }
 
 

@@ -19,6 +19,7 @@ import com.lukou.publishervideo.base.BaseDialog;
 import com.lukou.publishervideo.base.BaseView;
 import com.lukou.publishervideo.bean.Asiginer;
 import com.lukou.publishervideo.bean.PublisherVideo;
+import com.lukou.publishervideo.mvp.home.v.activity.HomeActivity;
 import com.lukou.publishervideo.utils.LKUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
 import com.lukou.publishervideo.utils.netUtils.KuaishouHttpResult;
@@ -43,10 +44,13 @@ public class SetAsignerDialog extends BaseDialog {
     private Context context;
     @BindView(R.id.ll)
     LinearLayout ll;
+    HomeActivity homeActivity;
+    Button sellectButtun;
 
     public SetAsignerDialog(Context context) {
         super(context, R.style.main_dialog);
         this.context = context;
+        homeActivity = (HomeActivity) context;
     }
 
     @Override
@@ -56,31 +60,13 @@ public class SetAsignerDialog extends BaseDialog {
 
     @Override
     public void init() {
-        ApiFactory.getInstance().getAsigner().subscribe(new Action1<KuaishouHttpResult<Asiginer>>() {
-            @Override
-            public void call(KuaishouHttpResult<Asiginer> httpResult) {
+        homeActivity.addSubscription(ApiFactory.getInstance().getAsigner()
+                .subscribe(httpResult -> {
+                    setLayout(httpResult.list);
+                    setTagListner();
+                }, throwable -> {
 
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-
-            }
-        });
-
-        //测试
-        {
-            List<Asiginer> asiginerList = new ArrayList<>();
-            for (int i = 0; i <= 9; i++) {
-                Asiginer asiginer = new Asiginer();
-                asiginer.setAsignerName("kobe");
-                asiginer.setAsignCnt(222);
-                asiginerList.add(asiginer);
-            }
-            setLayout(asiginerList);
-        }
-
-
+                }));
     }
 
     private void setLayout(List<Asiginer> asiginers) {
@@ -88,6 +74,7 @@ public class SetAsignerDialog extends BaseDialog {
         LinearLayout oldLinearLayout = null;
         for (Asiginer asiginer : asiginers) {
             i++;
+            //换行
             if (i % 3 == 0) {
                 oldLinearLayout = new LinearLayout(context);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -96,19 +83,20 @@ public class SetAsignerDialog extends BaseDialog {
                 oldLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
                 ll.addView(oldLinearLayout);
             }
+
             addItem(asiginer, oldLinearLayout);
             if (i % 3 != 2) {
                 addSpace(oldLinearLayout);
             }
         }
-        for (int j = 0; j < 3 - asiginers.size() % 3; j++) {
-            addItem(null, oldLinearLayout);
+        if (asiginers.size() % 3 != 0) {
+            for (int j = 0; j < 3 - asiginers.size() % 3; j++) {
+                addItem(null, oldLinearLayout);
+            }
+            if (asiginers.size() % 3 == 1) {
+                addSpace(oldLinearLayout);
+            }
         }
-        if (asiginers.size() % 3 == 1) {
-            addSpace(oldLinearLayout);
-        }
-
-
         addBottomBar();
     }
 
@@ -152,9 +140,50 @@ public class SetAsignerDialog extends BaseDialog {
                 for (int k = 0; k < viewGroup.getChildCount(); k++) {
                     if (viewGroup.getChildAt(k) instanceof Button) {
                         Button button = (Button) viewGroup.getChildAt(k);
-                        button.setOnClickListener(view -> {
+                        if (button.getText().toString().equals("取消")) {
+                            button.setOnClickListener(view -> {
+                                this.dismiss();
+                            });
 
-                        });
+                        } else if (button.getText().toString().equals("确定")) {
+                            button.setOnClickListener(view -> {
+                                if (sellectButtun != null) {
+                                    String[] strings = sellectButtun.getText().toString().split("\\(");
+                                    String name = strings[0];
+                                    int asignCount = Integer.parseInt(strings[1].split("个")[0]);
+                                    homeActivity.refresh(HomeActivity.SET_ASIGNER, name, asignCount);
+                                    this.dismiss();
+                                }
+                            });
+
+                        } else {
+                            button.setOnClickListener(view -> {
+                                setButtonSellected(button);
+                            });
+
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    private void setButtonSellected(Button sellectButton) {
+        sellectButtun = sellectButton;
+        for (int i = 0; i < ll.getChildCount(); i++) {
+            if (ll.getChildAt(i) instanceof ViewGroup) {
+                ViewGroup viewGroup = (ViewGroup) ll.getChildAt(i);
+                for (int k = 0; k < viewGroup.getChildCount(); k++) {
+                    if (viewGroup.getChildAt(k) instanceof Button) {
+                        Button button = (Button) viewGroup.getChildAt(k);
+                        if (!button.getText().equals("取消") && !button.getText().equals("确定")) {
+                            if (button == sellectButton) {
+                                button.setSelected(true);
+                            } else {
+                                button.setSelected(false);
+                            }
+                        }
                     }
                 }
             }

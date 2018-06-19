@@ -28,6 +28,7 @@ import javax.inject.Singleton;
 public class ApiFactory extends BaseHttpService {
 
     private volatile static ApiService apiService;
+    private volatile static ApiFactory apiFactory;
 
     @Inject
     public ApiFactory(ApiService apiService) {
@@ -35,15 +36,16 @@ public class ApiFactory extends BaseHttpService {
         this.apiService = apiService;
     }
 
-    public static synchronized ApiService getInstance() {
-        if (apiService == null) {
-            final HttpParams httpParams = new HttpParams.Builder(BuildConfig.baseUrl)
+    public static synchronized ApiFactory getInstance() {
+        if (apiFactory == null) {
+            HttpParams httpParams = new HttpParams.Builder(BuildConfig.baseUrl)
                     .interceptor(new HeaderInterceptor())
                     //.interceptor(new HttpsScopeInterceptor())
                     .build();
             apiService = BaseHttpService.getRetrofit(MainApplication.instance(), httpParams, BuildConfig.DEBUG).create(ApiService.class);
+            apiFactory = new ApiFactory(apiService);
         }
-        return apiService;
+        return apiFactory;
     }
 
 

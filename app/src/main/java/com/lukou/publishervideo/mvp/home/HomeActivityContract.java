@@ -10,7 +10,7 @@ public interface HomeActivityContract {
 
     interface View extends BaseView {
         void initView();
-        void refresh(List<PublisherVideo> publisherVideos);
+        void refresh(int code,Object... parms);
     }
 
 }

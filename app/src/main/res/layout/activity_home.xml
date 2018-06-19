@@ -7,11 +7,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <com.lukou.publishervideo.widget.VideoRecycleView
         android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.lukou.publishervideo.widget.VideoRecycleView>
+        android:layout_height="match_parent"></com.lukou.publishervideo.widget.VideoRecycleView>
+
+    <com.lukou.publishervideo.widget.TextImageView
+        android:id="@+id/asigner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium_20"
+        android:drawablePadding="@dimen/margin_small"
+        android:drawableRight="@drawable/switch_bt"
+        android:gravity="center"
+        android:text="请设置审核人"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_large"
+        app:drawableRightHeight="14dp"
+        app:drawableRightWidth="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
 
 
