@@ -64,8 +64,12 @@ public class VideoPlayerUtil {
     }
 
     public static void replay(NiceVideoPlayer videoView, LinearLayout button) {
-        videoView.restart();
-        videoView.seekTo(0);
+        if (videoView.isCompleted()){
+            videoView.restart();
+        }else {
+            videoView.seekTo(0);
+        }
+
     }
 
     private static class MyVideoPlayerController extends NiceVideoPlayerController implements SeekBar.OnSeekBarChangeListener {
@@ -96,6 +100,10 @@ public class VideoPlayerUtil {
         @Override
         public void setImage(int i) {
 
+        }
+
+        public void replay(){
+            performClick();
         }
 
         @Override
