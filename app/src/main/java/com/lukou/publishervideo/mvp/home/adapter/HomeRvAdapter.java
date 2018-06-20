@@ -38,8 +38,10 @@ import rx.functions.Action1;
  * Created by cxt on 2018/6/14.
  */
 
-public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItemViewHolder> {
+public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_FOOTER = 1;
     private HomeActivity homeActivity;
     private List<PublisherVideo> publisherVideos = new ArrayList<>();
     @Inject
@@ -52,6 +54,9 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
     }
 
     public void setPublisherVideoList(List<PublisherVideo> list) {
+        if (list == null) {
+            return;
+        }
         publisherVideos = list;
         notifyDataSetChanged();
     }
@@ -67,28 +72,46 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
         return publisherVideos;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position + 1 == getItemCount()) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_ITEM;
+        }
+    }
+
     @NonNull
     @Override
-    public HomeRvItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.acitivity_home_rv_item, parent, false);
-        HomeRvItemViewHolder holder = new HomeRvItemViewHolder(view);
-        return holder;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == TYPE_ITEM) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.acitivity_home_rv_item, parent, false);
+            HomeRvItemViewHolder holder = new HomeRvItemViewHolder(view);
+            return holder;
+        } else if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.activity_home_rv_foot, parent,
+                    false);
+            return new FootViewHolder(view);
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeRvItemViewHolder holder, int position) {
-        holder.setVideoView(publisherVideos.get(position));
-        //防止第一个视频不刷新
-        if (position == 0 && VideoRecycleView.getCurrentPosition() == 0) {
-            holder.setVideoURL(publisherVideos.get(0));
-            VideoRecycleView.setCanScrollToNext(publisherVideos.get(0).getType() == 0 ? false : true);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof HomeRvItemViewHolder) {
+            ((HomeRvItemViewHolder) holder).setVideoView(publisherVideos.get(position), position == publisherVideos.size() - 1);
+            //防止第一个视频不刷新
+            if (position == 0 && VideoRecycleView.getCurrentPosition() == 0) {
+                ((HomeRvItemViewHolder) holder).setVideoURL(publisherVideos.get(0));
+                VideoRecycleView.setCanScrollToNext(publisherVideos.get(0).getType() == 0 ? false : true);
+            }
         }
     }
 
 
     @Override
     public int getItemCount() {
-        return publisherVideos.size();
+        return publisherVideos.size() == 0 ? 0 : publisherVideos.size() + 1;
     }
 
 
@@ -112,6 +135,7 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
         @BindView(R.id.notAds_bt)
         Button notAds_bt;
         PublisherVideo publisherVideo;
+        boolean isEnd = false;
 
 
         HomeRvItemViewHolder(View view) {
@@ -120,8 +144,9 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
             this.setIsRecyclable(false);
         }
 
-        private void setVideoView(PublisherVideo video) {
+        private void setVideoView(PublisherVideo video, boolean isEnd) {
             this.publisherVideo = video;
+            this.isEnd = isEnd;
             VideoPlayerUtil.initVideoView(videoView, mContext, seekbarTv, currentbarTv, totalTv);
             setvideoTag();
         }
@@ -161,13 +186,16 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
                 public void call(KuaishouHttpResult kuaishouHttpResult) {
                     publisherVideo.setType(2);
                     VideoRecycleView.setCanScrollToNext(true);
-                    homeActivity.rv.scrollToNext();
+                    if (!isEnd) {
+                        homeActivity.rv.scrollToNext();
+                    } else {
+                        //滚动到footer
+                        homeActivity.rv.smoothScrollToPosition(publisherVideos.size());
+                    }
                 }
-            }, new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
+            }, throwable -> {
 
-                }
+
             }));
         }
 
@@ -195,5 +223,11 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
 
     }
 
+    private class FootViewHolder extends RecyclerView.ViewHolder {
+
+        public FootViewHolder(View view) {
+            super(view);
+        }
+    }
 
 }

@@ -43,9 +43,23 @@ public class HomeActivityPresenter extends BasePresenter<HomeActivityContract.Vi
     }
 
     public void getVideoList() {
+        if (sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "").equals("")){
+            Toast.makeText((Context) rootView,"请先选择审核人",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         rootView.addSubscription(apiFactory.getPublisherVideo(1, 0, sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
         )
                 .subscribe(result -> rootView.refresh(HomeActivity.INIT_PUBLISH_VIDEO_LIST, result.list), throwable -> {
+                    Toast.makeText(MainApplication.instance(), "刷新失败", Toast.LENGTH_SHORT).show();
+                }))
+        ;
+    }
+
+    public void addVideoList() {
+        rootView.addSubscription(apiFactory.getPublisherVideo(1, 0, sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
+        )
+                .subscribe(result -> rootView.refresh(HomeActivity.ADD_PUBLISH_VIDEO_LIST, result.list), throwable -> {
                     Toast.makeText(MainApplication.instance(), "刷新失败", Toast.LENGTH_SHORT).show();
                 }))
         ;

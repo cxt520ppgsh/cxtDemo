@@ -3,7 +3,7 @@
     <!-- 快手标签项目  -->
     <color name="colorPrimary">#18ad9d</color>
     <color name="colorPrimaryDark">#4d18ad9d</color>
-    <color name="colorAccent">#f8b03e</color>
+    <color name="colorAccent">#18ad9d</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="main_dialog_bg">#2b2c2f</color>
