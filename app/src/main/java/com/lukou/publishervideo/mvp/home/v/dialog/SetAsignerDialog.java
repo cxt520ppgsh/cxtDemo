@@ -1,38 +1,22 @@
 package com.lukou.publishervideo.mvp.home.v.dialog;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.os.Bundle;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.lukou.publishervideo.R;
 import com.lukou.publishervideo.base.BaseDialog;
-import com.lukou.publishervideo.base.BaseView;
 import com.lukou.publishervideo.bean.Asiginer;
-import com.lukou.publishervideo.bean.PublisherVideo;
 import com.lukou.publishervideo.mvp.home.v.activity.HomeActivity;
 import com.lukou.publishervideo.utils.LKUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
-import com.lukou.publishervideo.utils.netUtils.KuaishouHttpResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import rx.functions.Action1;
 
 import static android.view.Gravity.CENTER;
 
@@ -65,7 +49,7 @@ public class SetAsignerDialog extends BaseDialog {
                     setLayout(httpResult.list);
                     setTagListner();
                 }, throwable -> {
-
+                    throwable.printStackTrace();
                 }));
     }
 

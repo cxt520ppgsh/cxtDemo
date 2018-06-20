@@ -36,6 +36,16 @@ android {
             abiFilters "armeabi", "armeabi-v7a"
         }
     }
+    signingConfigs {
+        lukou {
+            storeFile file("../dabao/release.jks")
+            storePassword System.getenv().get("LUKOU_APP_RELEASE_PASSWORD")
+            keyAlias System.getenv().get("LUKOU_APP_RELEASE_ALIAS")
+            keyPassword System.getenv().get("LUKOU_APP_RELEASE_PASSWORD")
+            v2SigningEnabled false
+        }
+
+    }
 
     buildTypes {
         debug {
@@ -46,6 +56,7 @@ android {
         release {
             buildConfigField "String", "baseUrl", "\"http://paidan.lukou.com:9495/api/kuaishou/\""
             buildConfigField "String", "debugUrl", "\"http://paidan.lukou.com:9495/api/kuaishou/\""
+            signingConfig signingConfigs.lukou
             zipAlignEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
