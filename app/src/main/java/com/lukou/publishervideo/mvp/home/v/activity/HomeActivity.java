@@ -37,14 +37,14 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     public static final int INIT_PUBLISH_VIDEO_LIST = 0;
     public static final int SET_ASIGNER = 1;
     @Inject
-    ApiFactory apiFactory;
+    public ApiFactory apiFactory;
     @Inject
     HomeRvAdapter homeRvAdapter;
     @Inject
     SharedPreferences sharedPreferences;
 
     @BindView(R.id.rv)
-    VideoRecycleView rv;
+    public VideoRecycleView rv;
     @BindView(R.id.asigner)
     TextImageView asignerTv;
 
@@ -80,6 +80,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
                 asignerTv.setText(parms[0] + ":" + parms[1]);
                 sharedPreferences.edit().putString(SharedPreferencesUtil.SP_ASIGNER_NAME, (String) parms[0]).commit();
                 sharedPreferences.edit().putInt(SharedPreferencesUtil.SP_ASIGNER_COUNT, (int) parms[1]).commit();
+                mPresenter.getVideoList();
                 break;
             default:
                 break;
@@ -123,7 +124,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
                             if (view != null) {
                                 HomeRvAdapter.HomeRvItemViewHolder homeRvItemViewHolder = (HomeRvAdapter.HomeRvItemViewHolder) rv.getChildViewHolder(view);
                                 homeRvItemViewHolder.setVideoURL(homeRvAdapter.getPublisherVideoList().get(rv.getCurrentPosition()));
-                                rv.setCanScrollToNext(true);
+                                VideoRecycleView.setCanScrollToNext(homeRvAdapter.getPublisherVideoList().get(rv.getCurrentPosition()).getType() == 0 ? false : true);
                             }
                         }
                     }

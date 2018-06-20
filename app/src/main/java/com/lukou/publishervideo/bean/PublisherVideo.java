@@ -28,6 +28,17 @@ public class PublisherVideo {
     private int deletedFeed;
     private int commentCnt;
 
+    //客户端0为未打标签
+    private int type = 0;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public String getUpdateTime() {
         return updateTime;
     }

@@ -41,13 +41,6 @@ public abstract class BaseDialog extends Dialog {
 
         ButterKnife.bind(this);
 
-        DaggerHomeActivityComponent
-                .builder()
-                .appComponent(MainApplication.instance().getAppComponent())
-                .homeActivityModule(new HomeActivityModule((HomeActivityContract.View) context))
-                .build()
-                .inject(this);
-
         Window window = getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setWindowAnimations(R.style.bottom_menu_animation);

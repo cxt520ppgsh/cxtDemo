@@ -2,6 +2,7 @@ package com.lukou.publishervideo.mvp.home.p;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.intersection.listmodule.entity.ResultList;
@@ -11,6 +12,7 @@ import com.lukou.publishervideo.bean.Asiginer;
 import com.lukou.publishervideo.bean.PublisherVideo;
 import com.lukou.publishervideo.mvp.home.HomeActivityContract;
 import com.lukou.publishervideo.mvp.home.v.activity.HomeActivity;
+import com.lukou.publishervideo.utils.SharedPreferencesUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
 import com.lukou.publishervideo.utils.netUtils.KuaishouHttpResult;
 
@@ -25,6 +27,8 @@ public class HomeActivityPresenter extends BasePresenter<HomeActivityContract.Vi
     HomeActivityContract.View rootView;
     @Inject
     ApiFactory apiFactory;
+    @Inject
+    SharedPreferences sharedPreferences;
 
     @Inject
     public HomeActivityPresenter(HomeActivityContract.View rootView) {
@@ -35,19 +39,12 @@ public class HomeActivityPresenter extends BasePresenter<HomeActivityContract.Vi
     @Override
     public void onStart() {
         rootView.initView();
-        getVideoList(0);
+        getVideoList();
     }
 
-    void getVideoList(int page) {
-        rootView.addSubscription(apiFactory.getPublisherVideo(page,
-                "",
-                "send_time",
-                0,
-                -1,
-                "",
-                "",
-                0,
-                "")
+    public void getVideoList() {
+        rootView.addSubscription(apiFactory.getPublisherVideo(1, 0, sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
+        )
                 .subscribe(result -> rootView.refresh(HomeActivity.INIT_PUBLISH_VIDEO_LIST, result.list), throwable -> {
                     Toast.makeText(MainApplication.instance(), "刷新失败", Toast.LENGTH_SHORT).show();
                 }))

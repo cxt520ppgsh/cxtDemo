@@ -56,26 +56,19 @@ public class ApiFactory extends BaseHttpService {
 
 
     public Observable<KuaishouHttpResult<PublisherVideo>> getPublisherVideo(
-            int page,
-            String keyWord,
-            String sort_field,
             int delete_type,
             int video_type,
-            String start_date,
-            String end_date,
-            int delivery_level,
             String asigner)
 
     {
-        return apiService.getPublisherVideo(page,
-                keyWord,
-                sort_field,
+        return apiService.getPublisherVideo(
                 delete_type,
                 video_type,
-                start_date,
-                end_date,
-                delivery_level,
                 asigner).compose(lift());
+    }
+
+    public Observable<KuaishouHttpResult> setTag(String fid, int type) {
+        return apiService.setTag(fid, type).compose(lift());
     }
 
     public Observable<KuaishouHttpResult<Asiginer>> getAsigner() {

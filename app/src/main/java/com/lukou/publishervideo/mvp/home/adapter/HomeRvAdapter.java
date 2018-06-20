@@ -6,17 +6,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lukou.publishervideo.R;
 import com.lukou.publishervideo.bean.PublisherVideo;
+import com.lukou.publishervideo.mvp.home.v.activity.HomeActivity;
 import com.lukou.publishervideo.mvp.home.v.dialog.CommodityDialog;
 import com.lukou.publishervideo.mvp.home.v.dialog.SetAsignerDialog;
 import com.lukou.publishervideo.mvp.home.v.dialog.SetTagDialog;
 import com.lukou.publishervideo.utils.VideoPlayerUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
+import com.lukou.publishervideo.utils.netUtils.KuaishouHttpResult;
 import com.lukou.publishervideo.widget.VideoRecycleView;
 import com.xiao.nicevideoplayer.NiceVideoPlayer;
 import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
@@ -29,6 +32,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 /**
  * Created by cxt on 2018/6/14.
@@ -36,14 +40,23 @@ import butterknife.OnClick;
 
 public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItemViewHolder> {
     private Context mContext;
+    private HomeActivity homeActivity;
     private List<PublisherVideo> publisherVideos = new ArrayList<>();
+    @Inject
+    ApiFactory apiFactory;
 
     @Inject
     HomeRvAdapter(Context context) {
         mContext = context;
+        homeActivity = (HomeActivity) context;
     }
 
     public void setPublisherVideoList(List<PublisherVideo> list) {
+        publisherVideos = list;
+        notifyDataSetChanged();
+    }
+
+    public void addPublisherVideoList(List<PublisherVideo> list) {
         for (PublisherVideo publisherVideo : list) {
             publisherVideos.add(publisherVideo);
         }
@@ -65,9 +78,10 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
     @Override
     public void onBindViewHolder(@NonNull HomeRvItemViewHolder holder, int position) {
         holder.setVideoView(publisherVideos.get(position));
+        //防止第一个视频不刷新
         if (position == 0 && VideoRecycleView.getCurrentPosition() == 0) {
             holder.setVideoURL(publisherVideos.get(0));
-            VideoRecycleView.setCanScrollToNext(true);
+            VideoRecycleView.setCanScrollToNext(publisherVideos.get(0).getType() == 0 ? false : true);
         }
     }
 
@@ -93,6 +107,10 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
         TextView totalTv;
         @BindView(R.id.mediacontroller_seekbar)
         SeekBar seekbarTv;
+        @BindView(R.id.isAds_bt)
+        Button isAds_bt;
+        @BindView(R.id.notAds_bt)
+        Button notAds_bt;
         PublisherVideo publisherVideo;
 
 
@@ -105,6 +123,17 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
         private void setVideoView(PublisherVideo video) {
             this.publisherVideo = video;
             VideoPlayerUtil.initVideoView(videoView, mContext, seekbarTv, currentbarTv, totalTv);
+            setvideoTag();
+        }
+
+        private void setvideoTag() {
+            if (publisherVideo.getType() == 2) {
+                notAds_bt.setSelected(true);
+                isAds_bt.setSelected(false);
+            } else if (publisherVideo.getType() != 2 && publisherVideo.getType() != 0) {
+                notAds_bt.setSelected(false);
+                isAds_bt.setSelected(true);
+            }
         }
 
         public void setVideoURL(PublisherVideo video) {
@@ -127,7 +156,19 @@ public class HomeRvAdapter extends RecyclerView.Adapter<HomeRvAdapter.HomeRvItem
 
         @OnClick(R.id.notAds_bt)
         void notAds_bt_Click() {
+            homeActivity.addSubscription(apiFactory.setTag(publisherVideo.getFid(), 2).subscribe(new Action1<KuaishouHttpResult>() {
+                @Override
+                public void call(KuaishouHttpResult kuaishouHttpResult) {
+                    publisherVideo.setType(2);
+                    VideoRecycleView.setCanScrollToNext(true);
+                    homeActivity.rv.scrollToNext();
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
 
+                }
+            }));
         }
 
 

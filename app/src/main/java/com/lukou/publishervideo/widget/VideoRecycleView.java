@@ -22,6 +22,7 @@ public class VideoRecycleView extends RecyclerView {
     LinearLayoutManager layoutMgr;
     //当 当前Item的视频未打标签是设为false阻止上滑到下一个视频，否则设为true
     private static boolean canScrollToNext = false;
+    private boolean isToasted = false;
 
     public VideoRecycleView(Context context) {
         this(context, null, 0);
@@ -40,6 +41,13 @@ public class VideoRecycleView extends RecyclerView {
         canScrollToNext = canScrollNext;
     }
 
+    public void scrollToNext() {
+        layoutMgr = (LinearLayoutManager) getLayoutManager();
+        int firstPosition = layoutMgr.findFirstVisibleItemPosition();
+        currentPosition = firstPosition + 1;
+        smoothScrollToPosition(firstPosition + 1);
+    }
+
     public static int getCurrentPosition() {
         return currentPosition;
     }
@@ -48,19 +56,33 @@ public class VideoRecycleView extends RecyclerView {
     public boolean onTouchEvent(MotionEvent e) {
         layoutMgr = (LinearLayoutManager) getLayoutManager();
         int firstPosition = layoutMgr.findFirstVisibleItemPosition();
-
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 dowxY = e.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 dy = e.getY() - dowxY;
-                if (!canScrollToNext && dy < 0) {
-                    dy = 0;
+                if (Math.abs(dy) < 10) {
                     return true;
                 }
+
+                if (!canScrollToNext && dy < 0) {
+                    dy = 0;
+                    if (!isToasted) {
+                        isToasted = true;
+                        Toast.makeText(getContext(), "先打标签才可以浏览下个视频", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+
                 break;
             case MotionEvent.ACTION_UP:
+                isToasted = false;
+                if (!canScrollVertically(-1)) {
+                    dy = 0;
+                    return super.onTouchEvent(e);
+                }
+
                 if (dy > 0 && dy < ACTION_Y) {
                     currentPosition = firstPosition + 1;
                     smoothScrollToPosition(firstPosition + 1);
@@ -83,4 +105,5 @@ public class VideoRecycleView extends RecyclerView {
         }
         return super.onTouchEvent(e);
     }
+
 }
