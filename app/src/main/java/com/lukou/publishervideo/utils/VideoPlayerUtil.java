@@ -64,9 +64,9 @@ public class VideoPlayerUtil {
     }
 
     public static void replay(NiceVideoPlayer videoView, LinearLayout button) {
-        if (videoView.isCompleted()){
+        if (videoView.isCompleted()) {
             videoView.restart();
-        }else {
+        } else {
             videoView.seekTo(0);
         }
 
@@ -102,7 +102,7 @@ public class VideoPlayerUtil {
 
         }
 
-        public void replay(){
+        public void replay() {
             performClick();
         }
 
@@ -203,6 +203,7 @@ public class VideoPlayerUtil {
             }
 
             long position = (long) ((float) (this.mNiceVideoPlayer.getDuration() * (long) seekBar.getProgress()) / 100.0F);
+            position = position < 9000 ? 9000 : position;
             this.mNiceVideoPlayer.seekTo(position);
         }
     }

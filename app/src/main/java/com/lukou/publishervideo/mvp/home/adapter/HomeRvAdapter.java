@@ -158,6 +158,9 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             } else if (publisherVideo.getType() != 2 && publisherVideo.getType() != 0) {
                 notAds_bt.setSelected(false);
                 isAds_bt.setSelected(true);
+            }else {
+                notAds_bt.setSelected(false);
+                isAds_bt.setSelected(false);
             }
         }
 
