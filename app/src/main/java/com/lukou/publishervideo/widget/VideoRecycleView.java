@@ -58,6 +58,26 @@ public class VideoRecycleView extends RecyclerView {
     }
 
     @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                dowxY = ev.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                dy = ev.getY() - dowxY;
+                if (Math.abs(dy) >= 10) {
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            default:
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent e) {
         layoutMgr = (LinearLayoutManager) getLayoutManager();
         int firstPosition = layoutMgr.findFirstVisibleItemPosition();

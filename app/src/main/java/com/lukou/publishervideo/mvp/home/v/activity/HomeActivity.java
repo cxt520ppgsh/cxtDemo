@@ -21,10 +21,11 @@ import com.lukou.publishervideo.mvp.home.dagger.module.HomeActivityModule;
 import com.lukou.publishervideo.mvp.home.p.HomeActivityPresenter;
 import com.lukou.publishervideo.mvp.home.v.dialog.SetAsignerDialog;
 import com.lukou.publishervideo.utils.SharedPreferencesUtil;
+import com.lukou.publishervideo.utils.VideoUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
 import com.lukou.publishervideo.widget.TextImageView;
 import com.lukou.publishervideo.widget.VideoRecycleView;
-import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
 
 import java.util.IllegalFormatCodePointException;
@@ -35,6 +36,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements HomeActivityContract.View {
@@ -165,16 +167,19 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
-                if (lastVisibleItemPosition + 1 == homeRvAdapter.getItemCount()) {
-                    boolean isRefreshing = swipeRefreshLayout.isRefreshing();
-                    if (isRefreshing) {
-                        homeRvAdapter.notifyItemRemoved(homeRvAdapter.getItemCount());
-                        return;
-                    }
-                    if (!isLoading) {
-                        isLoading = true;
-                        mPresenter.addVideoList();
+                //下拉刷新 上拉加载更多
+                {
+                    int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+                    if (lastVisibleItemPosition + 1 == homeRvAdapter.getItemCount()) {
+                        boolean isRefreshing = swipeRefreshLayout.isRefreshing();
+                        if (isRefreshing) {
+                            homeRvAdapter.notifyItemRemoved(homeRvAdapter.getItemCount());
+                            return;
+                        }
+                        if (!isLoading) {
+                            isLoading = true;
+                            mPresenter.addVideoList();
+                        }
                     }
                 }
             }
@@ -193,12 +198,14 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
                                 if (rv.getChildViewHolder(view) instanceof HomeRvAdapter.HomeRvItemViewHolder) {
                                     HomeRvAdapter.HomeRvItemViewHolder homeRvItemViewHolder = (HomeRvAdapter.HomeRvItemViewHolder) rv.getChildViewHolder(view);
                                     homeRvItemViewHolder.setVideoURL(homeRvAdapter.getPublisherVideoList().get(rv.getCurrentPosition()));
-                                    VideoRecycleView.setCanScrollToNext(homeRvAdapter.getPublisherVideoList().get(rv.getCurrentPosition()).getType() == 0 ? false : true);
                                 }
                             }
                         }
                     }
 
+                }
+                else if (newState == SCROLL_STATE_DRAGGING){
+                    GSYVideoManager.onPause();
                 }
             }
 
@@ -213,24 +220,19 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     @Override
     protected void onResume() {
         super.onResume();
-        if (rv.getCurrentPosition() < homeRvAdapter.getPublisherVideoList().size()) {
-            if (homeRvAdapter.getPublisherVideoList().get(rv.getCurrentPosition()) != null) {
-                View view = rv.getLayoutManager().findViewByPosition((rv.getCurrentPosition()));
-                if (view != null) {
-                    if (rv.getChildViewHolder(view) instanceof HomeRvAdapter.HomeRvItemViewHolder) {
-                        HomeRvAdapter.HomeRvItemViewHolder homeRvItemViewHolder = (HomeRvAdapter.HomeRvItemViewHolder) rv.getChildViewHolder(view);
-                        homeRvItemViewHolder.setVideoURL(homeRvAdapter.getPublisherVideoList().get(rv.getCurrentPosition()));
-                        VideoRecycleView.setCanScrollToNext(homeRvAdapter.getPublisherVideoList().get(rv.getCurrentPosition()).getType() == 0 ? false : true);
-                    }
-                }
-            }
-        }
+        GSYVideoManager.onResume();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        NiceVideoPlayerManager.instance().releaseNiceVideoPlayer();
+        GSYVideoManager.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        GSYVideoManager.releaseAllVideos();
     }
 
     private RecyclerView.ViewHolder getViewHolder(int position) {

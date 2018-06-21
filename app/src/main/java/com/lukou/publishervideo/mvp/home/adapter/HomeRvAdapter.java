@@ -15,15 +15,15 @@ import com.lukou.publishervideo.R;
 import com.lukou.publishervideo.bean.PublisherVideo;
 import com.lukou.publishervideo.mvp.home.v.activity.HomeActivity;
 import com.lukou.publishervideo.mvp.home.v.dialog.CommodityDialog;
-import com.lukou.publishervideo.mvp.home.v.dialog.SetAsignerDialog;
 import com.lukou.publishervideo.mvp.home.v.dialog.SetTagDialog;
-import com.lukou.publishervideo.utils.VideoPlayerUtil;
+import com.lukou.publishervideo.utils.VideoUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
 import com.lukou.publishervideo.utils.netUtils.KuaishouHttpResult;
+import com.lukou.publishervideo.widget.VideoView.MyStandardVideoPlayer;
 import com.lukou.publishervideo.widget.VideoRecycleView;
-import com.xiao.nicevideoplayer.NiceVideoPlayer;
-import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
 
+
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,11 +100,10 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HomeRvItemViewHolder) {
-            ((HomeRvItemViewHolder) holder).setVideoView(publisherVideos.get(position), position == publisherVideos.size() - 1);
+            ((HomeRvItemViewHolder) holder).setVideoView(publisherVideos.get(position), position == publisherVideos.size() - 1, position);
             //防止第一个视频不刷新
             if (position == 0 && VideoRecycleView.getCurrentPosition() == 0) {
                 ((HomeRvItemViewHolder) holder).setVideoURL(publisherVideos.get(0));
-                VideoRecycleView.setCanScrollToNext(publisherVideos.get(0).getType() == 0 ? false : true);
             }
         }
     }
@@ -118,19 +117,19 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public class HomeRvItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.videoView)
-        NiceVideoPlayer videoView;
+        MyStandardVideoPlayer videoView;
         @BindView(R.id.next20Per)
         LinearLayout next20Per;
         @BindView(R.id.last20Per)
         LinearLayout last20Per;
         @BindView(R.id.replay)
         LinearLayout replay;
-        @BindView(R.id.mediacontroller_time_current)
-        TextView currentbarTv;
-        @BindView(R.id.mediacontroller_time_total)
+        @BindView(R.id.current)
+        TextView currentTv;
+        @BindView(R.id.total)
         TextView totalTv;
-        @BindView(R.id.mediacontroller_seekbar)
-        SeekBar seekbarTv;
+        @BindView(R.id.progress)
+        SeekBar seekbar;
         @BindView(R.id.isAds_bt)
         Button isAds_bt;
         @BindView(R.id.notAds_bt)
@@ -145,10 +144,10 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             this.setIsRecyclable(false);
         }
 
-        private void setVideoView(PublisherVideo video, boolean isEnd) {
+        private void setVideoView(PublisherVideo video, boolean isEnd, int position) {
             this.publisherVideo = video;
             this.isEnd = isEnd;
-            VideoPlayerUtil.initVideoView(videoView, mContext, seekbarTv, currentbarTv, totalTv);
+            VideoUtil.initVideoView(mContext, videoView, position, video.getVideoUrl(),seekbar,currentTv,totalTv);
             setvideoTag();
         }
 
@@ -159,7 +158,7 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             } else if (publisherVideo.getType() != 2 && publisherVideo.getType() != 0) {
                 notAds_bt.setSelected(false);
                 isAds_bt.setSelected(true);
-            }else {
+            } else {
                 notAds_bt.setSelected(false);
                 isAds_bt.setSelected(false);
             }
@@ -167,14 +166,13 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public void setVideoURL(PublisherVideo video) {
             if (videoView != null) {
-                VideoPlayerUtil.setVideoUrl(videoView, video.getVideoUrl());
+                VideoUtil.setVideoUrl(videoView, video.getVideoUrl());
+                VideoRecycleView.setCanScrollToNext(publisherVideo.getType() == 0 ? false : true);
             }
         }
 
         public void destroyVideoView() {
-            if (videoView == NiceVideoPlayerManager.instance().getCurrentNiceVideoPlayer()) {
-                NiceVideoPlayerManager.instance().releaseNiceVideoPlayer();
-            }
+            videoView.release();
         }
 
         @OnClick(R.id.isAds_bt)
@@ -204,7 +202,6 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }));
         }
 
-
         @OnClick(R.id.commondity)
         void commondity() {
             new CommodityDialog(mContext, publisherVideo).show();
@@ -212,19 +209,18 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         @OnClick(R.id.next20Per)
         void next20Click() {
-            VideoPlayerUtil.next20per(videoView, next20Per);
+            VideoUtil.next20per(videoView, next20Per);
         }
 
         @OnClick(R.id.last20Per)
         void last20Click() {
-            VideoPlayerUtil.last20per(videoView, last20Per);
+            VideoUtil.last20per(videoView, last20Per);
         }
 
         @OnClick(R.id.replay)
         void replayClick() {
-            VideoPlayerUtil.replay(videoView, replay);
+            VideoUtil.replay(videoView, replay);
         }
-
 
     }
 
