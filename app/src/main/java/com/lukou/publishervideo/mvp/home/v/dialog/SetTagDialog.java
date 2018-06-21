@@ -3,6 +3,7 @@ package com.lukou.publishervideo.mvp.home.v.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
@@ -22,6 +23,7 @@ import com.lukou.publishervideo.bean.PublisherVideo;
 import com.lukou.publishervideo.mvp.home.dagger.scope.HomeActivityScope;
 import com.lukou.publishervideo.mvp.home.v.activity.HomeActivity;
 import com.lukou.publishervideo.utils.LKUtil;
+import com.lukou.publishervideo.utils.SharedPreferencesUtil;
 import com.lukou.publishervideo.utils.TagUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
 import com.lukou.publishervideo.utils.netUtils.KuaishouHttpResult;
@@ -44,6 +46,8 @@ public class SetTagDialog extends BaseDialog {
     private PublisherVideo publisherVideo;
     @BindView(R.id.rl)
     RelativeLayout rl;
+    @Inject
+    SharedPreferences sharedPreferences;
 
     public SetTagDialog(Context context, PublisherVideo publisherVideo) {
         super(context, R.style.main_dialog);
@@ -75,14 +79,12 @@ public class SetTagDialog extends BaseDialog {
                             button.setSelected(false);
                         }
                         button.setOnClickListener(view -> {
-                            homeActivity.addSubscription(homeActivity.apiFactory.setTag(publisherVideo.getFid(), TagUtil.getTagId(button.getText().toString())).subscribe(new Action1<KuaishouHttpResult>() {
-                                @Override
-                                public void call(KuaishouHttpResult kuaishouHttpResult) {
-                                    publisherVideo.setType(TagUtil.getTagId(button.getText().toString()));
-                                    VideoRecycleView.setCanScrollToNext(true);
-                                    homeActivity.rv.scrollToNext();
-                                    dismiss();
-                                }
+                                homeActivity.addSubscription(homeActivity.apiFactory.setTag(publisherVideo.getFid(), TagUtil.getTagId(button.getText().toString())).subscribe(kuaishouHttpResult -> {
+                                homeActivity.initAsignerTv();
+                                publisherVideo.setType(TagUtil.getTagId(button.getText().toString()));
+                                VideoRecycleView.setCanScrollToNext(true);
+                                homeActivity.rv.scrollToNext();
+                                dismiss();
                             }, new Action1<Throwable>() {
                                 @Override
                                 public void call(Throwable throwable) {

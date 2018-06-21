@@ -48,6 +48,11 @@ public class VideoRecycleView extends RecyclerView {
         smoothScrollToPosition(firstPosition + 1);
     }
 
+    public void scrollToHead() {
+        currentPosition = 0;
+        scrollToPosition(0);
+    }
+
     public static int getCurrentPosition() {
         return currentPosition;
     }

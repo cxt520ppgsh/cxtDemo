@@ -55,7 +55,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     @BindView(R.id.rv)
     public VideoRecycleView rv;
     @BindView(R.id.asigner)
-    TextImageView asignerTv;
+    public TextImageView asignerTv;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -85,6 +85,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     public void refresh(int code, Object... parms) {
         switch (code) {
             case INIT_PUBLISH_VIDEO_LIST:
+                rv.scrollToHead();
                 if (!isRefresh) {
                     homeRvAdapter.setPublisherVideoList((List<PublisherVideo>) parms[0]);
                 } else {
@@ -130,7 +131,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
         swipeRefreshLayout.setColorScheme(R.color.colorPrimary);
     }
 
-    private void initAsignerTv() {
+    public void initAsignerTv() {
         String asignerName = sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "");
         int asignerCount = sharedPreferences.getInt(SharedPreferencesUtil.SP_ASIGNER_COUNT, 0);
         asignerTv.setText(asignerName == "" ? "请设置审核人" : asignerName + ":" + asignerCount);

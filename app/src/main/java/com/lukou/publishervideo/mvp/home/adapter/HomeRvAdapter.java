@@ -59,6 +59,7 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
         publisherVideos = list;
         notifyDataSetChanged();
+
     }
 
     public void addPublisherVideoList(List<PublisherVideo> list) {
@@ -195,6 +196,7 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         //滚动到footer
                         homeActivity.rv.smoothScrollToPosition(publisherVideos.size());
                     }
+                    homeActivity.initAsignerTv();
                 }
             }, throwable -> {
 
