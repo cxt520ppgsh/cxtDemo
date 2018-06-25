@@ -2,22 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/margin_30_dp"
     android:paddingLeft="@dimen/margin_medium_10"
+    android:paddingTop="@dimen/margin_30_dp"
     android:paddingRight="@dimen/margin_medium_10">
-<Button
-    android:text="取消"
-    android:textSize="@dimen/text_large"
-    android:textColor="@color/text_gray_k2"
-    android:background="@drawable/main_dialog_bottombar_solid"
-    android:layout_width="60dp"
-    android:layout_height="32dp" />
+
     <Button
-        android:text="确定"
-        android:layout_alignParentRight="true"
-        android:textSize="@dimen/text_large"
-        android:textColor="@color/white"
-        android:background="@drawable/main_dialog_bottombar_solid2"
         android:layout_width="60dp"
-        android:layout_height="32dp" />
+        android:layout_height="32dp"
+        android:background="@drawable/main_dialog_bottombar_solid"
+        android:text="取消"
+        android:textColor="@color/text_gray_k2"
+        android:textSize="@dimen/text_large" />
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/main_dialog_bottombar_solid2"
+        android:text="确定"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_large" />
 </RelativeLayout>
