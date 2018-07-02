@@ -121,13 +121,10 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     }
 
     private void initSwipeRefreshLayout() {
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (!isRefresh) {
-                    isRefresh = true;
-                    mPresenter.getVideoList();
-                }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (!isRefresh) {
+                isRefresh = true;
+                mPresenter.getVideoList();
             }
         });
         swipeRefreshLayout.setColorScheme(R.color.colorPrimary);

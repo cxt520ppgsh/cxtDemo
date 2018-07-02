@@ -39,8 +39,8 @@ ext {
     ANDROID_ARCH_LIFECYCLE = "1.1.1"
     ANDROID_ARCH_ROOM = "1.1.0"
 
-    APP_VERSION_CODE = 110
-    APP_VERSION_NAME = "1.1.0"
+    APP_VERSION_CODE = 112
+    APP_VERSION_NAME = "1.1.2"
 
     junitVersion = '4.12'
 

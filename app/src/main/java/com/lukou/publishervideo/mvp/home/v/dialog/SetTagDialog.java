@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.lukou.publishervideo.R;
 import com.lukou.publishervideo.base.BaseDialog;
 import com.lukou.publishervideo.bean.Asiginer;
@@ -29,12 +30,16 @@ import com.lukou.publishervideo.utils.netUtils.ApiFactory;
 import com.lukou.publishervideo.utils.netUtils.KuaishouHttpResult;
 import com.lukou.publishervideo.widget.VideoRecycleView;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.functions.Action1;
+
+import static android.view.Gravity.CENTER;
 
 /**
  * Created by cxt on 2018/6/15.
@@ -46,8 +51,8 @@ public class SetTagDialog extends BaseDialog {
     private PublisherVideo publisherVideo;
     @BindView(R.id.rl)
     RelativeLayout rl;
-    @Inject
-    SharedPreferences sharedPreferences;
+    @BindView(R.id.tag_lay)
+    FlexboxLayout tagLay;
 
     public SetTagDialog(Context context, PublisherVideo publisherVideo) {
         super(context, R.style.main_dialog);
@@ -63,7 +68,35 @@ public class SetTagDialog extends BaseDialog {
 
     @Override
     public void init() {
+        setLayout();
+    }
+
+    private void setLayout() {
+        for (String tag : TagUtil.tagMap.keySet()) {
+            if (tag.equals("非广告")) {
+                continue;
+            }
+            addItem(tag);
+        }
         setTagButton();
+    }
+
+    private void addItem(String tags) {
+        Button button = new Button(context);
+        button.setTextSize(14);
+        button.setPadding(0, 0, 0, 0);
+        button.setGravity(CENTER);
+        button.setTextColor(context.getResources().getColor(R.color.white));
+        button.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.main_dialog_bt_selecter));
+        FlexboxLayout.LayoutParams lp = new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LKUtil.dp2px(context, 32));
+        lp.setMargins(0, LKUtil.dip2px(context, 8), 0, LKUtil.dip2px(context, 8));
+        button.setLayoutParams(lp);
+        tagLay.addView(button);
+        if (tags != null) {
+            button.setText(tags);
+        } else {
+            button.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setTagButton() {
@@ -79,7 +112,7 @@ public class SetTagDialog extends BaseDialog {
                             button.setSelected(false);
                         }
                         button.setOnClickListener(view -> {
-                                homeActivity.addSubscription(homeActivity.apiFactory.setTag(publisherVideo.getFid(), TagUtil.getTagId(button.getText().toString())).subscribe(kuaishouHttpResult -> {
+                            homeActivity.addSubscription(homeActivity.apiFactory.setTag(publisherVideo.getFid(), TagUtil.getTagId(button.getText().toString())).subscribe(kuaishouHttpResult -> {
                                 homeActivity.initAsignerTv();
                                 publisherVideo.setType(TagUtil.getTagId(button.getText().toString()));
                                 VideoRecycleView.setCanScrollToNext(true);

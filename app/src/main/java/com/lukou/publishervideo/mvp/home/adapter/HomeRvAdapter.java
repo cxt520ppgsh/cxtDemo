@@ -16,10 +16,12 @@ import com.lukou.publishervideo.bean.PublisherVideo;
 import com.lukou.publishervideo.mvp.home.v.activity.HomeActivity;
 import com.lukou.publishervideo.mvp.home.v.dialog.CommodityDialog;
 import com.lukou.publishervideo.mvp.home.v.dialog.SetTagDialog;
+import com.lukou.publishervideo.utils.LKUtil;
 import com.lukou.publishervideo.utils.VideoUtil;
 import com.lukou.publishervideo.utils.netUtils.ApiFactory;
 import com.lukou.publishervideo.utils.netUtils.KuaishouHttpResult;
-import com.lukou.publishervideo.widget.VideoView.MyStandardVideoPlayer;
+import com.lukou.publishervideo.utils.netUtils.ScreenUtil;
+import com.lukou.publishervideo.widget.MyVideoView;
 import com.lukou.publishervideo.widget.VideoRecycleView;
 
 
@@ -117,37 +119,32 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public class HomeRvItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.videoView)
-        MyStandardVideoPlayer videoView;
-        @BindView(R.id.next20Per)
-        LinearLayout next20Per;
-        @BindView(R.id.last20Per)
-        LinearLayout last20Per;
-        @BindView(R.id.replay)
-        LinearLayout replay;
-        @BindView(R.id.current)
-        TextView currentTv;
-        @BindView(R.id.total)
-        TextView totalTv;
-        @BindView(R.id.progress)
-        SeekBar seekbar;
+        MyVideoView videoView;
         @BindView(R.id.isAds_bt)
         Button isAds_bt;
         @BindView(R.id.notAds_bt)
         Button notAds_bt;
+        @BindView(R.id.isAds)
+        LinearLayout isAdsLl;
+        @BindView(R.id.notAds)
+        LinearLayout notAdsLl;
         PublisherVideo publisherVideo;
         boolean isEnd = false;
+        public View view;
 
 
         HomeRvItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            this.view = view;
             this.setIsRecyclable(false);
         }
 
         private void setVideoView(PublisherVideo video, boolean isEnd, int position) {
             this.publisherVideo = video;
             this.isEnd = isEnd;
-            VideoUtil.initVideoView(mContext, videoView, position, video.getVideoUrl(),seekbar,currentTv,totalTv);
+            setTagButton();
+            VideoUtil.initVideoView(mContext, videoView, position);
             setvideoTag();
         }
 
@@ -207,22 +204,27 @@ public class HomeRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             new CommodityDialog(mContext, publisherVideo).show();
         }
 
-        @OnClick(R.id.next20Per)
-        void next20Click() {
-            VideoUtil.next20per(videoView, next20Per);
-        }
+        private void setTagButton() {
+            float margin = LKUtil.dp2px(mContext, 20);
 
-        @OnClick(R.id.last20Per)
-        void last20Click() {
-            VideoUtil.last20per(videoView, last20Per);
-        }
+            view.findViewById(R.id.layout_bottom).post(new Runnable() {
+                @Override
+                public void run() {
+                    float y = view.findViewById(R.id.layout_bottom).getY() - notAdsLl.getHeight();
+                    notAdsLl.setY(y - margin);
+                    isAdsLl.setY(y - isAdsLl.getHeight() - margin * 2);
 
-        @OnClick(R.id.replay)
-        void replayClick() {
-            VideoUtil.replay(videoView, replay);
+                    notAdsLl.setX(ScreenUtil.getScreenW(mContext) - notAdsLl.getWidth() - margin);
+                    isAdsLl.setX(ScreenUtil.getScreenW(mContext) - isAdsLl.getWidth() - margin);
+
+                    notAdsLl.setVisibility(View.VISIBLE);
+                    isAdsLl.setVisibility(View.VISIBLE);
+                }
+            });
         }
 
     }
+
 
     private class FootViewHolder extends RecyclerView.ViewHolder {
 

@@ -65,7 +65,7 @@ public class VideoRecycleView extends RecyclerView {
                 break;
             case MotionEvent.ACTION_MOVE:
                 dy = ev.getY() - dowxY;
-                if (Math.abs(dy) >= 10) {
+                if (Math.abs(dy) >= 5) {
                     return true;
                 }
                 break;

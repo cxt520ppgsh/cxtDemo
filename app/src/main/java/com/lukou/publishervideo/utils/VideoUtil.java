@@ -5,7 +5,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.lukou.publishervideo.widget.VideoView.MyStandardVideoPlayer;
+import com.lukou.publishervideo.widget.MyVideoView;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType;
 
@@ -19,34 +19,33 @@ import java.util.Locale;
 public class VideoUtil {
     public static final String VIDEO_TAG = "VIDEO_TAG";
 
-    public static void initVideoView(Context context, MyStandardVideoPlayer videoPlayer, int position, String url, SeekBar seekBar, TextView currentTv, TextView totalTv) {
+    public static void initVideoView(Context context, MyVideoView myVideoView, int position) {
         GSYVideoManager.instance().setVideoType(context, GSYVideoType.IJKEXOPLAYER2);
-        videoPlayer.setTag(VIDEO_TAG);
-        videoPlayer.setPlayPosition(position);
-        videoPlayer.setReleaseWhenLossAudio(false);
-        videoPlayer.setIsTouchWiget(false);
-        videoPlayer.setProgressBar(seekBar, currentTv, totalTv);
+        myVideoView.setTag(VIDEO_TAG);
+        myVideoView.setPlayPosition(position);
+        myVideoView.setReleaseWhenLossAudio(false);
+        myVideoView.setIsTouchWiget(false);
     }
 
-    public static void setVideoUrl(MyStandardVideoPlayer videoPlayer, String url) {
-        videoPlayer.setUpLazy(url, true, null, null, null);
-        videoPlayer.startPlayLogic();
+    public static void setVideoUrl(MyVideoView myVideoView, String url) {
+        myVideoView.setUpLazy(url, true, null, null, null);
+        myVideoView.startPlayLogic();
     }
 
 
-    public static void next20per(MyStandardVideoPlayer videoView, LinearLayout button) {
+    public static void next20per(MyVideoView videoView) {
         long position = (long) ((float) (videoView.getDuration() * 0.2 + videoView.getCurrentPositionWhenPlaying()));
         position = position < 9000 ? 9000 : position;
         videoView.seekTo(position);
 
     }
 
-    public static void last20per(MyStandardVideoPlayer videoView, LinearLayout button) {
+    public static void last20per(MyVideoView videoView) {
         long position = (long) ((float) (-videoView.getDuration() * 0.2 + videoView.getCurrentPositionWhenPlaying()));
         videoView.seekTo(position);
     }
 
-    public static void replay(MyStandardVideoPlayer videoView, LinearLayout button) {
+    public static void replay(MyVideoView videoView) {
         videoView.startPlayLogic();
         videoView.seekTo(0);
     }

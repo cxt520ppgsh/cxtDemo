@@ -11,14 +11,7 @@ android {
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
-    defaultConfig {
-        applicationId "com.lukou.publishervideo"
-        minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
+    aaptOptions {         cruncherEnabled = false     }
     buildTypes {
         release {
             minifyEnabled false
@@ -99,7 +92,8 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    implementation('com.shuyu:GSYVideoPlayer:5.0.0-beta'){
+    implementation('com.shuyu:gsyVideoPlayer-java:5.0.1') {
         exclude group: "com.android.suppor"
     }
+    //compile 'com.shuyu:gsyVideoPlayer-armv7a:5.0.1'
 }

@@ -1,311 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_dialog_solid"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:id="@+id/layout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_30_dp"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="省钱快报"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="楚楚街"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="返利网"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout1"
-        android:layout_marginTop="@dimen/margin_30_dp"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="公众号"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="省啦啦"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="一淘"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout2"
-        android:layout_marginTop="@dimen/margin_30_dp"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="返利网"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="公众号"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="省啦啦"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/layout4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout2"
-        android:layout_marginTop="@dimen/margin_30_dp"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="贝壳优品"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="酷价"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="淘宝特价"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout4"
-        android:layout_marginTop="@dimen/margin_30_dp"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="花小钱"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="万利宝"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="其他竞品"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout5"
-        android:layout_marginTop="@dimen/margin_30_dp"
-        android:layout_marginBottom="@dimen/margin_30_dp"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="微商"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/main_dialog_bt_selecter"
-            android:text="其他广告"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium" />
-
-        <Space
-            android:layout_width="@dimen/margin_30_dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
     <ImageView
         android:id="@+id/close"
         android:layout_width="20dp"
@@ -314,5 +14,21 @@
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/margin_medium_10"
         android:src="@drawable/close_bt" />
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_below="@id/close"
+        android:id="@+id/tag_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_very_small"
+        android:layout_marginRight="@dimen/margin_very_small"
+        android:layout_marginBottom="@dimen/margin_medium"
+        app:alignContent="flex_start"
+        app:alignItems="flex_start"
+        app:flexDirection="row"
+        app:flexWrap="wrap"
+        app:justifyContent="space_between"
+        />
+
+
 
 </RelativeLayout>
