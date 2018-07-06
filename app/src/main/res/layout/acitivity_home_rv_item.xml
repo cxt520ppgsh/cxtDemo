@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.lukou.publishervideo.widget.MyVideoView
+    <com.lukou.publishervideo.view.widget.MyVideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -1,34 +1,19 @@
 package com.lukou.publishervideo.di.module;
 
-import android.app.Application;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lidao.httpmodule.http.BaseHttpService;
 import com.lidao.httpmodule.http.base.HttpParams;
-import com.lidao.httpmodule.http.base.HttpResult;
 import com.lukou.publishervideo.BuildConfig;
 import com.lukou.publishervideo.app.MainApplication;
-import com.lukou.publishervideo.mvp.home.dagger.scope.HomeActivityScope;
-import com.lukou.publishervideo.utils.netUtils.ApiFactory;
-import com.lukou.publishervideo.utils.netUtils.ApiService;
-import com.lukou.publishervideo.utils.netUtils.HeaderInterceptor;
+import com.lukou.publishervideo.model.net.ApiService;
+import com.lukou.publishervideo.model.net.HeaderInterceptor;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
 
 /**
  * Created by cxt on 2018/6/13.

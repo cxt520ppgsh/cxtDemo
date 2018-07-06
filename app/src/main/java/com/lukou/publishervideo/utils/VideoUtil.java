@@ -1,11 +1,8 @@
 package com.lukou.publishervideo.utils;
 
 import android.content.Context;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
-import com.lukou.publishervideo.widget.MyVideoView;
+import com.lukou.publishervideo.view.widget.MyVideoView;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType;
 

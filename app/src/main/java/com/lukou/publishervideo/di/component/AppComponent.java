@@ -1,12 +1,11 @@
 package com.lukou.publishervideo.di.component;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.SharedPreferences;
 
 import com.lukou.publishervideo.di.module.AppModule;
 import com.lukou.publishervideo.di.module.NetModule;
-import com.lukou.publishervideo.utils.netUtils.ApiService;
+import com.lukou.publishervideo.model.net.ApiService;
 
 import javax.inject.Singleton;
 

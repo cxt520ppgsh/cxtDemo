@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <com.lukou.publishervideo.widget.MyRelativeLayout
+    <com.lukou.publishervideo.view.widget.MyRelativeLayout
         android:id="@+id/surface_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/layout_bottom"
         android:gravity="center">
 
-    </com.lukou.publishervideo.widget.MyRelativeLayout>
+    </com.lukou.publishervideo.view.widget.MyRelativeLayout>
 
     <RelativeLayout
         android:id="@+id/thumb"

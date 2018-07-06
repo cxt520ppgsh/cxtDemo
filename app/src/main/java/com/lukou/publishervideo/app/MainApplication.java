@@ -15,15 +15,19 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        initComponnent();
+    }
+
+    public AppComponent getAppComponent() {
+        return mAppComponent;
+    }
+
+    private void initComponnent() {
         mAppComponent = DaggerAppComponent
                 .builder()
                 .appModule(new AppModule(this))
                 .netModule(new NetModule())
                 .build();
-    }
-
-    public AppComponent getAppComponent() {
-        return mAppComponent;
     }
 
     public static MainApplication instance() {

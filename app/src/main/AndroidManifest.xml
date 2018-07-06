@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:configChanges="orientation|keyboardHidden"
-            android:name=".mvp.home.v.activity.HomeActivity">
+            android:name=".view.activity.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

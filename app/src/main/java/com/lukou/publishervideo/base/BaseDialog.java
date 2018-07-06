@@ -11,13 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.lukou.publishervideo.R;
-import com.lukou.publishervideo.app.MainApplication;
-import com.lukou.publishervideo.di.component.DaggerAppComponent;
-import com.lukou.publishervideo.di.module.AppModule;
-import com.lukou.publishervideo.di.module.NetModule;
-import com.lukou.publishervideo.mvp.home.HomeActivityContract;
-import com.lukou.publishervideo.mvp.home.dagger.component.DaggerHomeActivityComponent;
-import com.lukou.publishervideo.mvp.home.dagger.module.HomeActivityModule;
+
 
 import butterknife.ButterKnife;
 
@@ -38,9 +32,12 @@ public abstract class BaseDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(setView());
-
         ButterKnife.bind(this);
+        setLayoutParmes();
+        init();
+    }
 
+    private void setLayoutParmes(){
         Window window = getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setWindowAnimations(R.style.bottom_menu_animation);
@@ -51,8 +48,6 @@ public abstract class BaseDialog extends Dialog {
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         getWindow().setAttributes(lp);
         setCanceledOnTouchOutside(true);
-
-        init();
     }
 
     public abstract int setView();
