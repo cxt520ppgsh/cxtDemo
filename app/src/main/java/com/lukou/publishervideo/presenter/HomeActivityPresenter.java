@@ -29,7 +29,6 @@ public class HomeActivityPresenter extends HomeActivityContract.Presenter {
     @Override
     public void onStart() {
         rootView.initView();
-
     }
 
     @Override

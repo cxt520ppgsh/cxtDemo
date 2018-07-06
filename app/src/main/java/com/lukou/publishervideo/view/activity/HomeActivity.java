@@ -40,11 +40,7 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements HomeActivityContract.View {
-
-    public static final int INIT_PUBLISH_VIDEO_LIST = 0;
     public static final int SET_ASIGNER = 1;
-    public static final int ADD_PUBLISH_VIDEO_LIST = 2;
-
 
     @Inject
     public ApiFactory apiFactory;

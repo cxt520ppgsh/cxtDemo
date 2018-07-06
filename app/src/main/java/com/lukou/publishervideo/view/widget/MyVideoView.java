@@ -83,13 +83,13 @@ public class MyVideoView extends StandardGSYVideoPlayer {
     @OnClick(R.id.last20Per)
     void last20PerClick() {
         onClickUiToggle();
-        VideoUtil.last20per(this);
+        VideoUtil.perSeek(this, -0.2f);
     }
 
     @OnClick(R.id.next20Per)
     void next20PerClick() {
         onClickUiToggle();
-        VideoUtil.next20per(this);
+        VideoUtil.perSeek(this, +0.2f);
     }
 
     @OnClick(R.id.replay)

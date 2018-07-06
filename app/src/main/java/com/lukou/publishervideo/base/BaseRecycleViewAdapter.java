@@ -32,6 +32,10 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
     List<T> list = new ArrayList<>();
     private LoadFinishEndListener loadFinishEndListener;
 
+    public BaseRecycleViewAdapter(Context context) {
+        this.context = context;
+    }
+
     public void setSwipeRefreshLayout(@NonNull SwipeRefreshLayout swipeRefreshLayout, RecyclerView recyclerView) {
         this.swipeRefreshLayout = swipeRefreshLayout;
         this.recyclerView = recyclerView;
@@ -134,17 +138,9 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
 
     }
 
-    public abstract void refresh();
-
-    public abstract void loadMore();
-
     @Override
     public int getItemCount() {
         return list.size() == 0 ? 0 : list.size() + 1;
-    }
-
-    public BaseRecycleViewAdapter(Context context) {
-        this.context = context;
     }
 
     @Override
@@ -171,13 +167,16 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
 
     public abstract RecyclerView.ViewHolder createItemViewholder(ViewGroup parent);
 
+    public abstract void refresh();
+
+    public abstract void loadMore();
+
     private class FootViewHolder extends RecyclerView.ViewHolder {
 
         public FootViewHolder(View view) {
             super(view);
         }
     }
-
 
     public interface LoadFinishEndListener {
         void onRefreshFinish();

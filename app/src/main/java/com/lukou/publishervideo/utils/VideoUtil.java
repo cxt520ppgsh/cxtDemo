@@ -29,17 +29,12 @@ public class VideoUtil {
         myVideoView.startPlayLogic();
     }
 
-
-    public static void next20per(MyVideoView videoView) {
-        long position = (long) ((float) (videoView.getDuration() * 0.2 + videoView.getCurrentPositionWhenPlaying()));
+    //按百分比跳
+    public static void perSeek(MyVideoView videoView, float per) {
+        long position = (long) ((float) (videoView.getDuration() * per + videoView.getCurrentPositionWhenPlaying()));
         position = position < 9000 ? 9000 : position;
         videoView.seekTo(position);
 
-    }
-
-    public static void last20per(MyVideoView videoView) {
-        long position = (long) ((float) (-videoView.getDuration() * 0.2 + videoView.getCurrentPositionWhenPlaying()));
-        videoView.seekTo(position);
     }
 
     public static void replay(MyVideoView videoView) {
