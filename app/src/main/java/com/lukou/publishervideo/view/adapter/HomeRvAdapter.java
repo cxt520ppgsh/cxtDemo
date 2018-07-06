@@ -42,29 +42,17 @@ import rx.functions.Action1;
  * Created by cxt on 2018/6/14.
  */
 
-public class HomeRvAdapter extends BaseRecycleViewAdapter {
+public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
     private Context mContext;
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_FOOTER = 1;
     private HomeActivity homeActivity;
-    private List<PublisherVideo> publisherVideos = new ArrayList<>();
-    @Inject
-    ApiFactory apiFactory;
-    @Inject
-    SharedPreferences sharedPreferences;
 
     @Inject
-    HomeRvAdapter(Context context, RecyclerView recyclerView) {
+    HomeRvAdapter(Context context) {
         super(context);
         mContext = context;
         homeActivity = (HomeActivity) context;
+        refresh();
     }
-
-
-    public List<PublisherVideo> getPublisherVideoList() {
-        return publisherVideos;
-    }
-
 
     @Override
     public RecyclerView.ViewHolder createItemViewholder(ViewGroup parent) {
@@ -76,21 +64,21 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HomeRvItemViewHolder) {
-            ((HomeRvItemViewHolder) holder).setVideoView(publisherVideos.get(position), position == publisherVideos.size() - 1, position);
+            ((HomeRvItemViewHolder) holder).setVideoView(getList().get(position), position == getList().size() - 1, position);
             //防止第一个视频不刷新
             if (position == 0 && VideoRecycleView.getCurrentPosition() == 0) {
-                ((HomeRvItemViewHolder) holder).setVideoURL(publisherVideos.get(0));
+                ((HomeRvItemViewHolder) holder).setVideoURL(getList().get(0));
             }
         }
     }
 
     @Override
     public void refresh() {
-        if (sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "").equals("")) {
+        if (homeActivity.sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "").equals("")) {
             Toast.makeText(mContext, "请先选择审核人", Toast.LENGTH_SHORT).show();
             return;
         }
-        homeActivity.addSubscription(apiFactory.getPublisherVideo(1, 0, sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
+        homeActivity.addSubscription(homeActivity.apiFactory.getPublisherVideo(1, 0, homeActivity.sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
         ).subscribe(result -> setList(result.list), throwable -> {
 
         }));
@@ -99,7 +87,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter {
 
     @Override
     public void loadMore() {
-        homeActivity.addSubscription(apiFactory.getPublisherVideo(1, 0, sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
+        homeActivity.addSubscription(homeActivity.apiFactory.getPublisherVideo(1, 0, homeActivity.sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
         ).subscribe(result -> addList(result.list), throwable -> {
 
         }));
@@ -169,14 +157,14 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter {
 
         @OnClick(R.id.notAds_bt)
         void notAds_bt_Click() {
-            homeActivity.addSubscription(apiFactory.setTag(publisherVideo.getFid(), 2).subscribe(kuaishouHttpResult -> {
+            homeActivity.addSubscription(homeActivity.apiFactory.setTag(publisherVideo.getFid(), 2).subscribe(kuaishouHttpResult -> {
                 publisherVideo.setType(2);
                 VideoRecycleView.setCanScrollToNext(true);
                 if (!isEnd) {
                     homeActivity.rv.scrollToNext();
                 } else {
                     //滚动到footer
-                    homeActivity.rv.smoothScrollToPosition(publisherVideos.size());
+                    homeActivity.rv.smoothScrollToPosition(getList().size());
                 }
                 homeActivity.initAsignerTv();
             }, throwable -> {

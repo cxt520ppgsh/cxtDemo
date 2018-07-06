@@ -75,7 +75,7 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
         if (!isRefresh) {
             notifyDataSetChanged();
             if (loadFinishEndListener != null) {
-                loadFinishEndListener.onLoadNextFinish();
+                loadFinishEndListener.onRefreshFinish();
             }
         } else {
             new Handler().postDelayed(() -> {
@@ -83,7 +83,7 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
                 isRefresh = false;
                 notifyDataSetChanged();
                 if (loadFinishEndListener != null) {
-                    loadFinishEndListener.onLoadNextFinish();
+                    loadFinishEndListener.onRefreshFinish();
                 }
             }, 500);
         }
@@ -107,6 +107,33 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
 
     }
 
+    public List<T> getList() {
+        return list;
+    }
+
+    private RecyclerView.ViewHolder getViewHolder(int position) {
+        if (recyclerView == null || recyclerView.getAdapter() == null || recyclerView.getAdapter().getItemCount() == 0) {
+            return null;
+        }
+        int count = recyclerView.getAdapter().getItemCount();
+        if (position < 0 || position > count - 1) {
+            return null;
+        }
+        RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(position);
+        if (viewHolder == null) {
+            RecyclerView.RecycledViewPool pool = recyclerView.getRecycledViewPool();
+            int recycleViewcount = pool.getRecycledViewCount(0);
+            viewHolder = pool.getRecycledView(0);
+            try {
+                pool.putRecycledView(viewHolder);
+            } catch (Exception e) {
+
+            }
+        }
+        return viewHolder;
+
+    }
+
     public abstract void refresh();
 
     public abstract void loadMore();
@@ -118,7 +145,6 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
 
     public BaseRecycleViewAdapter(Context context) {
         this.context = context;
-        refresh();
     }
 
     @Override

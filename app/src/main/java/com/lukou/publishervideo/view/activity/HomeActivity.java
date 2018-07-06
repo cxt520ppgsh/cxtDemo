@@ -2,6 +2,7 @@ package com.lukou.publishervideo.view.activity;
 
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,9 +49,9 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     @Inject
     public ApiFactory apiFactory;
     @Inject
-    HomeRvAdapter homeRvAdapter;
+    public SharedPreferences sharedPreferences;
     @Inject
-    SharedPreferences sharedPreferences;
+    HomeRvAdapter homeRvAdapter;
 
     @BindView(R.id.rv)
     public VideoRecycleView rv;
@@ -87,7 +88,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
                 asignerTv.setText(parms[0] + ":" + parms[1]);
                 sharedPreferences.edit().putString(SharedPreferencesUtil.SP_ASIGNER_NAME, (String) parms[0]).commit();
                 sharedPreferences.edit().putInt(SharedPreferencesUtil.SP_ASIGNER_COUNT, (int) parms[1]).commit();
-                mPresenter.getVideoList();
+                homeRvAdapter.refresh();
                 break;
             default:
                 break;
@@ -117,6 +118,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     private void initRv() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rv.setLayoutManager(linearLayoutManager);
+        homeRvAdapter.setSwipeRefreshLayout(swipeRefreshLayout, rv);
         homeRvAdapter.setLoadFinishEndListener(new BaseRecycleViewAdapter.LoadFinishEndListener() {
             @Override
             public void onRefreshFinish() {
@@ -140,13 +142,13 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == SCROLL_STATE_IDLE) {
                     //只有当前Item播放视频
-                    if (rv.getCurrentPosition() < homeRvAdapter.getPublisherVideoList().size()) {
-                        if (homeRvAdapter.getPublisherVideoList().get(rv.getCurrentPosition()) != null) {
+                    if (rv.getCurrentPosition() < homeRvAdapter.getList().size()) {
+                        if (homeRvAdapter.getList().get(rv.getCurrentPosition()) != null) {
                             View view = rv.getLayoutManager().findViewByPosition((rv.getCurrentPosition()));
                             if (view != null) {
                                 if (rv.getChildViewHolder(view) instanceof HomeRvAdapter.HomeRvItemViewHolder) {
                                     HomeRvAdapter.HomeRvItemViewHolder homeRvItemViewHolder = (HomeRvAdapter.HomeRvItemViewHolder) rv.getChildViewHolder(view);
-                                    homeRvItemViewHolder.setVideoURL(homeRvAdapter.getPublisherVideoList().get(rv.getCurrentPosition()));
+                                    homeRvItemViewHolder.setVideoURL(homeRvAdapter.getList().get(rv.getCurrentPosition()));
                                 }
                             }
                         }
@@ -183,26 +185,4 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
         GSYVideoManager.releaseAllVideos();
     }
 
-    private RecyclerView.ViewHolder getViewHolder(int position) {
-        if (rv == null || rv.getAdapter() == null || rv.getAdapter().getItemCount() == 0) {
-            return null;
-        }
-        int count = rv.getAdapter().getItemCount();
-        if (position < 0 || position > count - 1) {
-            return null;
-        }
-        RecyclerView.ViewHolder viewHolder = rv.findViewHolderForAdapterPosition(position);
-        if (viewHolder == null) {
-            RecyclerView.RecycledViewPool pool = rv.getRecycledViewPool();
-            int recycleViewcount = pool.getRecycledViewCount(0);
-            viewHolder = pool.getRecycledView(0);
-            try {
-                pool.putRecycledView(viewHolder);
-            } catch (Exception e) {
-
-            }
-        }
-        return viewHolder;
-
-    }
 }

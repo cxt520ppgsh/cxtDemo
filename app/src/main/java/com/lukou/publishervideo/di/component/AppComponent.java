@@ -16,7 +16,7 @@ import dagger.Component;
 public interface AppComponent {
     void inject(Activity activity);
 
-    ApiService provideApiService();
+    public ApiService provideApiService();
 
-    SharedPreferences provideSharedPreferences();
+    public SharedPreferences provideSharedPreferences();
 }
