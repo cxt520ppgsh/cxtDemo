@@ -9,13 +9,17 @@ public interface HomeActivityContract {
 
     interface View extends BaseView {
         void initView();
-        void refresh(int code,Object... parms);
+
+        void initAsigner();
+
     }
 
-    abstract class Presenter extends BasePresenter<View>{
+    abstract class Presenter extends BasePresenter<View> {
         public Presenter(View rootView) {
             super(rootView);
         }
+
+        abstract void initAsigner();
     }
 
 }

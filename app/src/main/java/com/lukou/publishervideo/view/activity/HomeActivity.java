@@ -40,8 +40,6 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements HomeActivityContract.View {
-    public static final int SET_ASIGNER = 1;
-
     @Inject
     public ApiFactory apiFactory;
     @Inject
@@ -78,18 +76,8 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     }
 
     @Override
-    public void refresh(int code, Object... parms) {
-        switch (code) {
-            case SET_ASIGNER:
-                asignerTv.setText(parms[0] + ":" + parms[1]);
-                sharedPreferences.edit().putString(SharedPreferencesUtil.SP_ASIGNER_NAME, (String) parms[0]).commit();
-                sharedPreferences.edit().putInt(SharedPreferencesUtil.SP_ASIGNER_COUNT, (int) parms[1]).commit();
-                homeRvAdapter.refresh();
-                break;
-            default:
-                break;
-        }
-
+    public void initAsigner() {
+        initAsignerTv();
     }
 
     public void initAsignerTv() {
@@ -114,6 +102,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     private void initRv() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rv.setLayoutManager(linearLayoutManager);
+        homeRvAdapter.setRecyclerView(rv);
         homeRvAdapter.setSwipeRefreshLayout(swipeRefreshLayout, rv);
         homeRvAdapter.setLoadFinishEndListener(new BaseRecycleViewAdapter.LoadFinishEndListener() {
             @Override
@@ -160,7 +149,21 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
 
     @OnClick(R.id.asigner)
     void setAsigner() {
-        new SetAsignerDialog(this).show();
+        new SetAsignerDialog.Builder(this).setSetAsignerDialog(new SetAsignerDialog.SetAsignerFinishListener() {
+
+            @Override
+            public void onSetAsignerSuccess(String name, int count) {
+                asignerTv.setText(name + ":" + count);
+                sharedPreferences.edit().putString(SharedPreferencesUtil.SP_ASIGNER_NAME, name).commit();
+                sharedPreferences.edit().putInt(SharedPreferencesUtil.SP_ASIGNER_COUNT, count).commit();
+                homeRvAdapter.refresh();
+            }
+
+            @Override
+            public void onSetAsignerTagFaild() {
+
+            }
+        }).show();
     }
 
     @Override

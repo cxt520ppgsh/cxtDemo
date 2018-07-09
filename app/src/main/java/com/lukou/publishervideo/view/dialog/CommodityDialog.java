@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.lukou.publishervideo.R;
+import com.lukou.publishervideo.base.BaseBottomDialog;
 import com.lukou.publishervideo.base.BaseDialog;
 import com.lukou.publishervideo.model.bean.PublisherVideo;
 
@@ -16,7 +17,7 @@ import butterknife.OnClick;
  * Created by cxt on 2018/6/15.
  */
 
-public class CommodityDialog extends BaseDialog {
+public class CommodityDialog extends BaseBottomDialog {
     private Context context;
     @BindView(R.id.publisher_name)
     TextView publisher_name;
@@ -33,15 +34,15 @@ public class CommodityDialog extends BaseDialog {
     @BindView(R.id.back)
     TextView back;
     private PublisherVideo publisherVideo;
+    private SetFinishListener setFinishListener;
 
-    public CommodityDialog(Context context, PublisherVideo publisherVideo) {
+    public CommodityDialog(Context context) {
         super(context, R.style.main_dialog);
         this.context = context;
-        this.publisherVideo = publisherVideo;
     }
 
     @Override
-    public int setView() {
+    public int setLayoutResource() {
         return R.layout.commodity_dialog_layout;
     }
 
@@ -64,5 +65,54 @@ public class CommodityDialog extends BaseDialog {
         this.dismiss();
     }
 
+    private void setSetFinishListner(SetFinishListener setFinishListner) {
+        this.setFinishListener = setFinishListner;
+    }
+
+    private void setPublisherVideo(PublisherVideo publisherVideo) {
+        this.publisherVideo = publisherVideo;
+    }
+
+    public static class Builder {
+        private Context context;
+        private SetFinishListener setFinishListener;
+        private PublisherVideo publisherVideo;
+
+        public Builder(final Context context) {
+            this.context = context;
+        }
+
+
+        public Builder setSetFinishLister(SetFinishListener setFinishListener) {
+            this.setFinishListener = setFinishListener;
+            return this;
+        }
+
+        public Builder setPublisherVideo(PublisherVideo publisherVideo) {
+            this.publisherVideo = publisherVideo;
+            return this;
+        }
+
+        private CommodityDialog create() {
+            CommodityDialog dialog = new CommodityDialog(context);
+            dialog.setSetFinishListner(setFinishListener);
+            dialog.setPublisherVideo(publisherVideo);
+            return dialog;
+        }
+
+        public CommodityDialog show() {
+            final CommodityDialog dialog = create();
+            dialog.show();
+            return dialog;
+        }
+
+    }
+
+
+    public interface SetFinishListener {
+        void onSetSuccess(String name, int count);
+
+        void onSetFaild();
+    }
 
 }

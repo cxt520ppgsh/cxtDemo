@@ -21,7 +21,7 @@ public class VideoRecycleView extends RecyclerView {
     private static int currentPosition = 0;
     LinearLayoutManager layoutMgr;
     //当 当前Item的视频未打标签是设为false阻止上滑到下一个视频，否则设为true
-    private static boolean canScrollToNext = false;
+    private boolean canScrollToNext = false;
     private boolean isToasted = false;
 
     public VideoRecycleView(Context context) {
@@ -37,7 +37,7 @@ public class VideoRecycleView extends RecyclerView {
         ACTION_Y = (float) (ScreenUtil.getScreenH(context) * 0.3);
     }
 
-    public static void setCanScrollToNext(boolean canScrollNext) {
+    public void setCanScrollToNext(boolean canScrollNext) {
         canScrollToNext = canScrollNext;
     }
 

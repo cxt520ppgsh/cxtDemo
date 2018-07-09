@@ -17,6 +17,7 @@ import com.lukou.publishervideo.base.BaseRecycleViewAdapter;
 import com.lukou.publishervideo.model.bean.PublisherVideo;
 import com.lukou.publishervideo.model.net.ApiFactory;
 import com.lukou.publishervideo.model.net.KuaishouHttpResult;
+import com.lukou.publishervideo.presenter.HomeActivityPresenter;
 import com.lukou.publishervideo.utils.SharedPreferencesUtil;
 import com.lukou.publishervideo.view.activity.HomeActivity;
 import com.lukou.publishervideo.view.dialog.CommodityDialog;
@@ -44,18 +45,23 @@ import rx.functions.Action1;
 
 public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
     private Context mContext;
-    private HomeActivity homeActivity;
     private ApiFactory mApiFactory;
     private SharedPreferences mSharedPreferences;
+    private VideoRecycleView recyclerView;
+    private HomeActivityPresenter mPresenter;
 
     @Inject
-    HomeRvAdapter(Context context, ApiFactory apiFactory, SharedPreferences sharedPreferences) {
+    HomeRvAdapter(Context context, ApiFactory apiFactory, SharedPreferences sharedPreferences, HomeActivityPresenter presenter) {
         super(context);
         mContext = context;
         mSharedPreferences = sharedPreferences;
         mApiFactory = apiFactory;
-        homeActivity = (HomeActivity) context;
+        mPresenter = presenter;
         refresh();
+    }
+
+    public void setRecyclerView(VideoRecycleView recyclerView) {
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -82,7 +88,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
             Toast.makeText(mContext, "请先选择审核人", Toast.LENGTH_SHORT).show();
             return;
         }
-        homeActivity.addSubscription(mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
+        mPresenter.addSubscription(mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
         ).subscribe(result -> setList(result.list), throwable -> {
 
         }));
@@ -91,7 +97,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
 
     @Override
     public void loadMore() {
-        homeActivity.addSubscription(mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
+        mPresenter.addSubscription(mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
         ).subscribe(result -> addList(result.list), throwable -> {
 
         }));
@@ -145,7 +151,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
         public void setVideoURL(PublisherVideo video) {
             if (videoView != null) {
                 VideoUtil.setVideoUrl(videoView, video.getVideoUrl());
-                VideoRecycleView.setCanScrollToNext(publisherVideo.getType() == 0 ? false : true);
+                recyclerView.setCanScrollToNext(publisherVideo.getType() == 0 ? false : true);
             }
         }
 
@@ -155,22 +161,34 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
 
         @OnClick(R.id.isAds_bt)
         void isAds_bt_Click() {
-            new SetTagDialog(mContext, publisherVideo).show();
 
+            new SetTagDialog.Builder(mContext).setPublisherVideo(publisherVideo).setSetTagFinishListener(new SetTagDialog.SetTagFinishListener() {
+                @Override
+                public void onSetTagSuccess() {
+                    mPresenter.initAsigner();
+                    recyclerView.setCanScrollToNext(true);
+                    recyclerView.scrollToNext();
+                }
+
+                @Override
+                public void onSetTagFaild() {
+
+                }
+            }).show();
         }
 
         @OnClick(R.id.notAds_bt)
         void notAds_bt_Click() {
-            homeActivity.addSubscription(mApiFactory.setTag(publisherVideo.getFid(), 2).subscribe(kuaishouHttpResult -> {
+            mPresenter.addSubscription(mApiFactory.setTag(publisherVideo.getFid(), 2).subscribe(kuaishouHttpResult -> {
                 publisherVideo.setType(2);
-                VideoRecycleView.setCanScrollToNext(true);
+                recyclerView.setCanScrollToNext(true);
                 if (!isEnd) {
-                    homeActivity.rv.scrollToNext();
+                    recyclerView.scrollToNext();
                 } else {
                     //滚动到footer
-                    homeActivity.rv.smoothScrollToPosition(getList().size());
+                    recyclerView.smoothScrollToPosition(getList().size());
                 }
-                homeActivity.initAsignerTv();
+                mPresenter.initAsigner();
             }, throwable -> {
 
 
@@ -179,7 +197,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
 
         @OnClick(R.id.commondity)
         void commondity() {
-            new CommodityDialog(mContext, publisherVideo).show();
+            new CommodityDialog.Builder(mContext).setPublisherVideo(publisherVideo).show();
         }
 
         private void setTagButton() {

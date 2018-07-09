@@ -7,8 +7,10 @@ import android.widget.Button;
 
 import com.google.android.flexbox.FlexboxLayout;
 import com.lukou.publishervideo.R;
+import com.lukou.publishervideo.base.BaseBottomDialog;
 import com.lukou.publishervideo.base.BaseDialog;
 import com.lukou.publishervideo.model.bean.Asiginer;
+import com.lukou.publishervideo.model.bean.PublisherVideo;
 import com.lukou.publishervideo.model.net.ApiFactory;
 import com.lukou.publishervideo.view.activity.HomeActivity;
 import com.lukou.publishervideo.utils.LKUtil;
@@ -24,33 +26,37 @@ import static android.view.Gravity.CENTER;
  * Created by cxt on 2018/6/15.
  */
 
-public class SetAsignerDialog extends BaseDialog {
+public class SetAsignerDialog extends BaseBottomDialog {
     private Context context;
     @BindView(R.id.asigner_lay)
     FlexboxLayout asignerLay;
-    HomeActivity homeActivity;
     Button sellectButtun;
+    private SetAsignerFinishListener setAsignerFinishListener;
 
     public SetAsignerDialog(Context context) {
         super(context, R.style.main_dialog);
         this.context = context;
-        homeActivity = (HomeActivity) context;
     }
 
     @Override
-    public int setView() {
+    public int setLayoutResource() {
         return R.layout.set_asigner_dialog_layout;
     }
 
     @Override
     public void init() {
-        homeActivity.addSubscription(ApiFactory.getInstance().getAsigner()
+        ApiFactory.getInstance().getAsigner()
                 .subscribe(httpResult -> {
                     setLayout(httpResult.list);
                     setTagListner();
                 }, throwable -> {
-                    throwable.printStackTrace();
-                }));
+
+                });
+    }
+
+
+    private void setSetAsignerDialog(SetAsignerFinishListener setAsignerFinishListener) {
+        this.setAsignerFinishListener = setAsignerFinishListener;
     }
 
     @OnClick(R.id.cancel_btn)
@@ -64,7 +70,7 @@ public class SetAsignerDialog extends BaseDialog {
             String[] strings = sellectButtun.getText().toString().split("\\(");
             String name = strings[0];
             int asignCount = Integer.parseInt(strings[1].split("个")[0]);
-            homeActivity.refresh(HomeActivity.SET_ASIGNER, name, asignCount);
+            setAsignerFinishListener.onSetAsignerSuccess(name, asignCount);
             this.dismiss();
         }
     }
@@ -118,4 +124,38 @@ public class SetAsignerDialog extends BaseDialog {
         }
     }
 
+    public static class Builder {
+        private Context context;
+        private SetAsignerFinishListener setTagFinishListener;
+
+        public Builder(final Context context) {
+            this.context = context;
+        }
+
+
+        public SetAsignerDialog.Builder setSetAsignerDialog(SetAsignerFinishListener setTagFinishListener) {
+            this.setTagFinishListener = setTagFinishListener;
+            return this;
+        }
+
+        private SetAsignerDialog create() {
+            SetAsignerDialog dialog = new SetAsignerDialog(context);
+            dialog.setSetAsignerDialog(setTagFinishListener);
+            return dialog;
+        }
+
+        public SetAsignerDialog show() {
+            final SetAsignerDialog dialog = create();
+            dialog.show();
+            return dialog;
+        }
+
+    }
+
+
+    public interface SetAsignerFinishListener {
+        void onSetAsignerSuccess(String name, int count);
+
+        void onSetAsignerTagFaild();
+    }
 }

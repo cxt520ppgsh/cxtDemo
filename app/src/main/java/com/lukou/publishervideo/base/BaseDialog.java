@@ -31,26 +31,15 @@ public abstract class BaseDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(setView());
+        setContentView(setLayoutResource());
         ButterKnife.bind(this);
-        setLayoutParmes();
+        setDialogParmes();
         init();
     }
 
-    private void setLayoutParmes(){
-        Window window = getWindow();
-        window.setGravity(Gravity.BOTTOM);
-        window.setWindowAnimations(R.style.bottom_menu_animation);
-        WindowManager windowManager = ((Activity) context).getWindowManager();
-        Display display = windowManager.getDefaultDisplay();
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.width = display.getWidth();
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        getWindow().setAttributes(lp);
-        setCanceledOnTouchOutside(true);
-    }
+    public abstract void setDialogParmes();
 
-    public abstract int setView();
+    public abstract int setLayoutResource();
 
     public abstract void init();
 }

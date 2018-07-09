@@ -27,6 +27,11 @@ public class HomeActivityPresenter extends HomeActivityContract.Presenter {
     }
 
     @Override
+    public void initAsigner() {
+        rootView.initAsigner();
+    }
+
+    @Override
     public void onStart() {
         rootView.initView();
     }
