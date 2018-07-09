@@ -7,6 +7,8 @@ import com.lukou.publishervideo.R;
 import com.lukou.publishervideo.base.BaseDialog;
 import com.lukou.publishervideo.model.bean.PublisherVideo;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 

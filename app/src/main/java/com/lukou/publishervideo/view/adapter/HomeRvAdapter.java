@@ -45,11 +45,15 @@ import rx.functions.Action1;
 public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
     private Context mContext;
     private HomeActivity homeActivity;
+    private ApiFactory mApiFactory;
+    private SharedPreferences mSharedPreferences;
 
     @Inject
-    HomeRvAdapter(Context context) {
+    HomeRvAdapter(Context context, ApiFactory apiFactory, SharedPreferences sharedPreferences) {
         super(context);
         mContext = context;
+        mSharedPreferences = sharedPreferences;
+        mApiFactory = apiFactory;
         homeActivity = (HomeActivity) context;
         refresh();
     }
@@ -74,11 +78,11 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
 
     @Override
     public void refresh() {
-        if (homeActivity.sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "").equals("")) {
+        if (mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "").equals("")) {
             Toast.makeText(mContext, "请先选择审核人", Toast.LENGTH_SHORT).show();
             return;
         }
-        homeActivity.addSubscription(homeActivity.apiFactory.getPublisherVideo(1, 0, homeActivity.sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
+        homeActivity.addSubscription(mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
         ).subscribe(result -> setList(result.list), throwable -> {
 
         }));
@@ -87,7 +91,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
 
     @Override
     public void loadMore() {
-        homeActivity.addSubscription(homeActivity.apiFactory.getPublisherVideo(1, 0, homeActivity.sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
+        homeActivity.addSubscription(mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
         ).subscribe(result -> addList(result.list), throwable -> {
 
         }));
@@ -157,7 +161,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
 
         @OnClick(R.id.notAds_bt)
         void notAds_bt_Click() {
-            homeActivity.addSubscription(homeActivity.apiFactory.setTag(publisherVideo.getFid(), 2).subscribe(kuaishouHttpResult -> {
+            homeActivity.addSubscription(mApiFactory.setTag(publisherVideo.getFid(), 2).subscribe(kuaishouHttpResult -> {
                 publisherVideo.setType(2);
                 VideoRecycleView.setCanScrollToNext(true);
                 if (!isEnd) {
