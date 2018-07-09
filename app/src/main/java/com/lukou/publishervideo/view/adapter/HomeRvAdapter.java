@@ -12,14 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.lukou.publishervideo.R;
-import com.lukou.publishervideo.app.MainApplication;
 import com.lukou.publishervideo.base.BaseRecycleViewAdapter;
 import com.lukou.publishervideo.model.bean.PublisherVideo;
 import com.lukou.publishervideo.model.net.ApiFactory;
-import com.lukou.publishervideo.model.net.KuaishouHttpResult;
 import com.lukou.publishervideo.presenter.HomeActivityPresenter;
 import com.lukou.publishervideo.utils.SharedPreferencesUtil;
-import com.lukou.publishervideo.view.activity.HomeActivity;
 import com.lukou.publishervideo.view.dialog.CommodityDialog;
 import com.lukou.publishervideo.view.dialog.SetTagDialog;
 import com.lukou.publishervideo.utils.LKUtil;
@@ -29,15 +26,11 @@ import com.lukou.publishervideo.view.widget.MyVideoView;
 import com.lukou.publishervideo.view.widget.VideoRecycleView;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.functions.Action1;
 
 /**
  * Created by cxt on 2018/6/14.
@@ -89,7 +82,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
             return;
         }
         mPresenter.addSubscription(mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
-        ).subscribe(result -> setList(result.list), throwable -> {
+        ).subscribe(list -> setList(list), throwable -> {
 
         }));
 
@@ -98,7 +91,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
     @Override
     public void loadMore() {
         mPresenter.addSubscription(mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
-        ).subscribe(result -> addList(result.list), throwable -> {
+        ).subscribe(list -> addList(list), throwable -> {
 
         }));
     }
@@ -179,7 +172,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
 
         @OnClick(R.id.notAds_bt)
         void notAds_bt_Click() {
-            mPresenter.addSubscription(mApiFactory.setTag(publisherVideo.getFid(), 2).subscribe(kuaishouHttpResult -> {
+            mPresenter.addSubscription(mApiFactory.setTag(publisherVideo.getFid(), 2).subscribe(pandaHackerHttpResult -> {
                 publisherVideo.setType(2);
                 recyclerView.setCanScrollToNext(true);
                 if (!isEnd) {

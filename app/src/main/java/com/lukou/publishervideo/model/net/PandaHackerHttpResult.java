@@ -6,7 +6,7 @@ import java.util.List;
  * Created by cxt on 2018/6/14.
  */
 
-public class KuaishouHttpResult<T> {
+public class PandaHackerHttpResult<T> {
     public int total;
     public int start;
     public int perpage;
@@ -15,4 +15,8 @@ public class KuaishouHttpResult<T> {
     public String title;
     public String data;
     public List<T> list;
+
+    public boolean isSuccess() {
+        return code == HttpConstant.SUCCESS || code == 0;
+    }
 }

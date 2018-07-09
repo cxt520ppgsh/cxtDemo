@@ -1,8 +1,6 @@
 package com.lukou.publishervideo.model.net;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import com.lidao.httpmodule.http.BaseHttpService;
 import com.lidao.httpmodule.http.base.HttpParams;
@@ -11,13 +9,15 @@ import com.lukou.publishervideo.app.MainApplication;
 import com.lukou.publishervideo.model.bean.Asiginer;
 import com.lukou.publishervideo.model.bean.PublisherVideo;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 
 /**
  * Created by cxt on 2018/6/14.
  */
-public class ApiFactory extends BaseHttpService {
+public class ApiFactory extends BasePandaHackerHttpService {
 
     private volatile static ApiService apiService;
     private volatile static ApiFactory apiFactory;
@@ -34,20 +34,14 @@ public class ApiFactory extends BaseHttpService {
                     .interceptor(new HeaderInterceptor())
                     //.interceptor(new HttpsScopeInterceptor())
                     .build();
-            apiService = BaseHttpService.getRetrofit(MainApplication.instance(), httpParams, BuildConfig.DEBUG).create(ApiService.class);
+            apiService = BasePandaHackerHttpService.getRetrofit(MainApplication.instance(), httpParams, BuildConfig.DEBUG).create(ApiService.class);
             apiFactory = new ApiFactory(apiService);
         }
         return apiFactory;
     }
 
 
-    <T> Observable.Transformer<T, T> lift() {
-        return observable -> observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-
-    public Observable<KuaishouHttpResult<PublisherVideo>> getPublisherVideo(
+    public Observable<List<PublisherVideo>> getPublisherVideo(
             int delete_type,
             int video_type,
             String asigner)
@@ -56,15 +50,15 @@ public class ApiFactory extends BaseHttpService {
         return apiService.getPublisherVideo(
                 delete_type,
                 video_type,
-                asigner).compose(lift());
+                asigner).compose(listReusltLift());
     }
 
-    public Observable<KuaishouHttpResult> setTag(String fid, int type) {
-        return apiService.setTag(fid, type).compose(lift());
+    public Observable<PandaHackerHttpResult> setTag(String fid, int type) {
+        return apiService.setTag(fid, type).compose(notListReusltLift());
     }
 
-    public Observable<KuaishouHttpResult<Asiginer>> getAsigner() {
-        return apiService.getAsigner().compose(lift());
+    public Observable<List<Asiginer>> getAsigner() {
+        return apiService.getAsigner().compose(listReusltLift());
     }
 
 }

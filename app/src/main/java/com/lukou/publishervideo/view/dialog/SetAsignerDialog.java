@@ -46,8 +46,8 @@ public class SetAsignerDialog extends BaseBottomDialog {
     @Override
     public void init() {
         ApiFactory.getInstance().getAsigner()
-                .subscribe(httpResult -> {
-                    setLayout(httpResult.list);
+                .subscribe(list -> {
+                    setLayout(list);
                     setTagListner();
                 }, throwable -> {
 

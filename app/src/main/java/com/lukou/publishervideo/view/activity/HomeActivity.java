@@ -80,6 +80,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
         initAsignerTv();
     }
 
+
     public void initAsignerTv() {
         String asignerName = sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "");
         int asignerCount = sharedPreferences.getInt(SharedPreferencesUtil.SP_ASIGNER_COUNT, 0);
@@ -87,8 +88,8 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
 
         //更新剩余审核数
         addSubscription(ApiFactory.getInstance().getAsigner()
-                .subscribe(httpResult -> {
-                    for (Asiginer asiginer : httpResult.list) {
+                .subscribe(list -> {
+                    for (Asiginer asiginer : list) {
                         if (asiginer.getAsignerName().equals(asignerName)) {
                             sharedPreferences.edit().putInt(SharedPreferencesUtil.SP_ASIGNER_COUNT, asiginer.getAsignCnt()).commit();
                             asignerTv.setText(asiginer.getAsignerName() + ":" + asiginer.getAsignCnt());

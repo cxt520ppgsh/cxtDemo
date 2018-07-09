@@ -17,14 +17,14 @@ import rx.Observable;
 public interface ApiService {
 
     @GET("publisher/video")
-    Observable<KuaishouHttpResult<PublisherVideo>> getPublisherVideo(@Query("delete_type") int delete_type,
-                                                                     @Query("video_type") int video_type,
-                                                                     @Query("asigner") String asigner);
+    Observable<PandaHackerHttpResult<PublisherVideo>> getPublisherVideo(@Query("delete_type") int delete_type,
+                                                                        @Query("video_type") int video_type,
+                                                                        @Query("asigner") String asigner);
 
     @GET("publisher/video/asign")
-    Observable<KuaishouHttpResult<Asiginer>> getAsigner();
+    Observable<PandaHackerHttpResult<Asiginer>> getAsigner();
 
     @FormUrlEncoded
     @POST("publisher/video")
-    Observable<KuaishouHttpResult> setTag(@Field("fid") String fid,@Field("type") int type);
+    Observable<PandaHackerHttpResult> setTag(@Field("fid") String fid, @Field("type") int type);
 }
