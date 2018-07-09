@@ -20,9 +20,9 @@ import com.lukou.publishervideo.utils.SharedPreferencesUtil;
 import com.lukou.publishervideo.view.dialog.CommodityDialog;
 import com.lukou.publishervideo.view.dialog.SetTagDialog;
 import com.lukou.publishervideo.utils.LKUtil;
-import com.lukou.publishervideo.utils.VideoUtil;
 import com.lukou.publishervideo.utils.ScreenUtil;
 import com.lukou.publishervideo.view.widget.MyVideoView;
+import com.lukou.publishervideo.view.widget.MyVideoViewController;
 import com.lukou.publishervideo.view.widget.VideoRecycleView;
 
 
@@ -99,7 +99,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
 
     public class HomeRvItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.videoView)
-        MyVideoView videoView;
+        MyVideoViewController videoView;
         @BindView(R.id.isAds_bt)
         Button isAds_bt;
         @BindView(R.id.notAds_bt)
@@ -124,7 +124,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
             this.publisherVideo = video;
             this.isEnd = isEnd;
             setTagButton();
-            VideoUtil.initVideoView(mContext, videoView, position);
+            videoView.initVideoPlayer(position);
             setvideoTag();
         }
 
@@ -143,13 +143,13 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
 
         public void setVideoURL(PublisherVideo video) {
             if (videoView != null) {
-                VideoUtil.setVideoUrl(videoView, video.getVideoUrl());
+                videoView.play(video.getVideoUrl());
                 recyclerView.setCanScrollToNext(publisherVideo.getType() == 0 ? false : true);
             }
         }
 
         public void destroyVideoView() {
-            videoView.release();
+            videoView.destroy();
         }
 
         @OnClick(R.id.isAds_bt)
