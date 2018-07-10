@@ -17,8 +17,4 @@ public abstract class BasePresenter<V extends BaseView>  implements Presenter {
         mRootView = null ;
     }
 
-    public void addSubscription(Subscription subscription){
-        mRootView.addSubscription(subscription);
-    }
-
 }

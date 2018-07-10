@@ -6,9 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import com.lukou.publishervideo.utils.ScreenUtil;
+import com.lukou.publishervideo.view.adapter.HomeRvAdapter;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
 /**
  * Created by cxt on 2018/6/18.
@@ -19,6 +22,7 @@ public class VideoRecycleView extends RecyclerView {
     private float dowxY = 0;
     private float dy = 0;
     private static int currentPosition = 0;
+    private HomeRvAdapter homeRvAdapter;
     LinearLayoutManager layoutMgr;
     //当 当前Item的视频未打标签是设为false阻止上滑到下一个视频，否则设为true
     private boolean canScrollToNext = false;
@@ -35,6 +39,7 @@ public class VideoRecycleView extends RecyclerView {
     public VideoRecycleView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         ACTION_Y = (float) (ScreenUtil.getScreenH(context) * 0.3);
+        init();
     }
 
     public void setCanScrollToNext(boolean canScrollNext) {
@@ -51,6 +56,40 @@ public class VideoRecycleView extends RecyclerView {
     public void scrollToHead() {
         currentPosition = 0;
         scrollToPosition(0);
+    }
+
+    private void init() {
+        setRecyclerListener(holder -> {
+            if (holder instanceof HomeRvAdapter.HomeRvItemViewHolder) {
+                ((HomeRvAdapter.HomeRvItemViewHolder) holder).destroyVideoView();
+            }
+        });
+
+        addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                homeRvAdapter = (HomeRvAdapter) getAdapter();
+                if (newState == SCROLL_STATE_IDLE) {
+                    //只有当前Item播放视频
+                    if (getCurrentPosition() < homeRvAdapter.getList().size()) {
+                        if (homeRvAdapter.getList().get(getCurrentPosition()) != null) {
+                            View view = getLayoutManager().findViewByPosition((getCurrentPosition()));
+                            if (view != null) {
+                                if (getChildViewHolder(view) instanceof HomeRvAdapter.HomeRvItemViewHolder) {
+                                    HomeRvAdapter.HomeRvItemViewHolder homeRvItemViewHolder = (HomeRvAdapter.HomeRvItemViewHolder) getChildViewHolder(view);
+                                    homeRvItemViewHolder.setVideoURL(homeRvAdapter.getList().get(getCurrentPosition()));
+                                }
+                            }
+                        }
+                    }
+
+                } else if (newState == SCROLL_STATE_DRAGGING) {
+                    GSYVideoManager.onPause();
+                }
+            }
+
+        });
     }
 
     public static int getCurrentPosition() {

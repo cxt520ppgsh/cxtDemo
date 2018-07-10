@@ -8,9 +8,6 @@ import com.lukou.publishervideo.base.BaseView;
 public interface HomeActivityContract {
 
     interface View extends BaseView {
-        void initView();
-
-        void initAsigner();
 
     }
 
@@ -18,8 +15,6 @@ public interface HomeActivityContract {
         public Presenter(View rootView) {
             super(rootView);
         }
-
-        abstract void initAsigner();
     }
 
 }

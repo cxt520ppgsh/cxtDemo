@@ -15,20 +15,11 @@ import javax.inject.Inject;
 
 public class HomeActivityPresenter extends HomeActivityContract.Presenter {
     HomeActivityContract.View rootView;
-    @Inject
-    ApiFactory apiFactory;
-    @Inject
-    SharedPreferences sharedPreferences;
 
     @Inject
     public HomeActivityPresenter(HomeActivityContract.View rootView) {
         super(rootView);
         this.rootView = rootView;
-    }
-
-    @Override
-    public void initAsigner() {
-        rootView.initAsigner();
     }
 
     @Override

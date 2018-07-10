@@ -45,8 +45,8 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "baseUrl", "\"http://paidan.lukou.com:9495/api/kuaishou/\""
-            buildConfigField "String", "debugUrl", "\"http://paidan.lukou.com:9495/api/kuaishou/\""
+            buildConfigField "String", "baseUrl", "\"http://paidan.lukou.com/api/kuaishou/\""
+            buildConfigField "String", "debugUrl", "\"http://paidan.lukou.com/api/kuaishou/\""
         }
 
         release {
@@ -91,7 +91,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
+    implementation 'org.greenrobot:eventbus:3.1.1'
     implementation('com.shuyu:gsyVideoPlayer-java:5.0.1') {
         exclude group: "com.android.suppor"
     }

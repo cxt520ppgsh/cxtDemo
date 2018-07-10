@@ -13,10 +13,13 @@ import android.widget.Toast;
 
 import com.lukou.publishervideo.R;
 import com.lukou.publishervideo.base.BaseRecycleViewAdapter;
+import com.lukou.publishervideo.model.bean.EventBusMessage;
 import com.lukou.publishervideo.model.bean.PublisherVideo;
 import com.lukou.publishervideo.model.net.ApiFactory;
 import com.lukou.publishervideo.presenter.HomeActivityPresenter;
+import com.lukou.publishervideo.utils.EventBusUtils;
 import com.lukou.publishervideo.utils.SharedPreferencesUtil;
+import com.lukou.publishervideo.view.activity.HomeActivity;
 import com.lukou.publishervideo.view.dialog.CommodityDialog;
 import com.lukou.publishervideo.view.dialog.SetTagDialog;
 import com.lukou.publishervideo.utils.LKUtil;
@@ -81,19 +84,32 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
             Toast.makeText(mContext, "请先选择审核人", Toast.LENGTH_SHORT).show();
             return;
         }
-        mPresenter.addSubscription(mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
-        ).subscribe(list -> setList(list), throwable -> {
-
-        }));
+        EventBusUtils.post(new EventBusMessage(HomeActivity.HOMEACTIVITY_ADD_SUBSCRIBTION,
+                mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
+                ).subscribe(list -> setList(list), throwable -> {
+                })));
 
     }
 
     @Override
     public void loadMore() {
-        mPresenter.addSubscription(mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
-        ).subscribe(list -> addList(list), throwable -> {
+        EventBusUtils.post(new EventBusMessage(HomeActivity.HOMEACTIVITY_ADD_SUBSCRIBTION,
+                mApiFactory.getPublisherVideo(1, 0, mSharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "")
+                ).subscribe(list -> addList(list), throwable -> {
 
-        }));
+                })));
+    }
+
+    @Override
+    public void onRefreshFinish() {
+        super.onRefreshFinish();
+        recyclerView.scrollToHead();
+    }
+
+    @Override
+    public void onLoadMoreFinish() {
+        super.onLoadMoreFinish();
+        recyclerView.scrollToNext();
     }
 
 
@@ -158,7 +174,7 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
             new SetTagDialog.Builder(mContext).setPublisherVideo(publisherVideo).setSetTagFinishListener(new SetTagDialog.SetTagFinishListener() {
                 @Override
                 public void onSetTagSuccess() {
-                    mPresenter.initAsigner();
+                    EventBusUtils.post(new EventBusMessage(HomeActivity.HOMEACTIVITY_INIT_ASIGNER_TV, ""));
                     recyclerView.setCanScrollToNext(true);
                     recyclerView.scrollToNext();
                 }
@@ -172,20 +188,21 @@ public class HomeRvAdapter extends BaseRecycleViewAdapter<PublisherVideo> {
 
         @OnClick(R.id.notAds_bt)
         void notAds_bt_Click() {
-            mPresenter.addSubscription(mApiFactory.setTag(publisherVideo.getFid(), 2).subscribe(pandaHackerHttpResult -> {
-                publisherVideo.setType(2);
-                recyclerView.setCanScrollToNext(true);
-                if (!isEnd) {
-                    recyclerView.scrollToNext();
-                } else {
-                    //滚动到footer
-                    recyclerView.smoothScrollToPosition(getList().size());
-                }
-                mPresenter.initAsigner();
-            }, throwable -> {
+            EventBusUtils.post(new EventBusMessage(HomeActivity.HOMEACTIVITY_ADD_SUBSCRIBTION,
+                    mApiFactory.setTag(publisherVideo.getFid(), 2).subscribe(pandaHackerHttpResult -> {
+                        publisherVideo.setType(2);
+                        recyclerView.setCanScrollToNext(true);
+                        if (!isEnd) {
+                            recyclerView.scrollToNext();
+                        } else {
+                            //滚动到footer
+                            recyclerView.smoothScrollToPosition(getList().size());
+                        }
+                        EventBusUtils.post(new EventBusMessage(HomeActivity.HOMEACTIVITY_INIT_ASIGNER_TV, ""));
+                    }, throwable -> {
 
 
-            }));
+                    })));
         }
 
         @OnClick(R.id.commondity)

@@ -14,6 +14,7 @@ import com.lukou.publishervideo.base.BaseActivity;
 import com.lukou.publishervideo.base.BaseRecycleViewAdapter;
 import com.lukou.publishervideo.di.component.DaggerHomeActivityComponent;
 import com.lukou.publishervideo.model.bean.Asiginer;
+import com.lukou.publishervideo.model.bean.EventBusMessage;
 import com.lukou.publishervideo.model.bean.PublisherVideo;
 import com.lukou.publishervideo.di.component.AppComponent;
 import com.lukou.publishervideo.model.net.ApiFactory;
@@ -29,17 +30,23 @@ import com.lukou.publishervideo.view.widget.VideoRecycleView;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Subscription;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements HomeActivityContract.View {
+    public static final String HOMEACTIVITY_INIT_ASIGNER_TV = "HOMEACTIVITY_INIT_ASIGNER_TV";
+    public static final String HOMEACTIVITY_ADD_SUBSCRIBTION = "HOMEACTIVITY_ADD_SUBSCRIBTION";
     @Inject
     public ApiFactory apiFactory;
     @Inject
@@ -75,12 +82,6 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
         initRv();
     }
 
-    @Override
-    public void initAsigner() {
-        initAsignerTv();
-    }
-
-
     public void initAsignerTv() {
         String asignerName = sharedPreferences.getString(SharedPreferencesUtil.SP_ASIGNER_NAME, "");
         int asignerCount = sharedPreferences.getInt(SharedPreferencesUtil.SP_ASIGNER_COUNT, 0);
@@ -105,53 +106,12 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
         rv.setLayoutManager(linearLayoutManager);
         homeRvAdapter.setRecyclerView(rv);
         homeRvAdapter.setSwipeRefreshLayout(swipeRefreshLayout, rv);
-        homeRvAdapter.setLoadFinishEndListener(new BaseRecycleViewAdapter.LoadFinishEndListener() {
-            @Override
-            public void onRefreshFinish() {
-                rv.scrollToHead();
-            }
-
-            @Override
-            public void onLoadNextFinish() {
-                rv.scrollToNext();
-            }
-        });
         rv.setAdapter(homeRvAdapter);
-        rv.setRecyclerListener(holder -> {
-            if (holder instanceof HomeRvAdapter.HomeRvItemViewHolder) {
-                ((HomeRvAdapter.HomeRvItemViewHolder) holder).destroyVideoView();
-            }
-        });
-        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == SCROLL_STATE_IDLE) {
-                    //只有当前Item播放视频
-                    if (rv.getCurrentPosition() < homeRvAdapter.getList().size()) {
-                        if (homeRvAdapter.getList().get(rv.getCurrentPosition()) != null) {
-                            View view = rv.getLayoutManager().findViewByPosition((rv.getCurrentPosition()));
-                            if (view != null) {
-                                if (rv.getChildViewHolder(view) instanceof HomeRvAdapter.HomeRvItemViewHolder) {
-                                    HomeRvAdapter.HomeRvItemViewHolder homeRvItemViewHolder = (HomeRvAdapter.HomeRvItemViewHolder) rv.getChildViewHolder(view);
-                                    homeRvItemViewHolder.setVideoURL(homeRvAdapter.getList().get(rv.getCurrentPosition()));
-                                }
-                            }
-                        }
-                    }
-
-                } else if (newState == SCROLL_STATE_DRAGGING) {
-                    GSYVideoManager.onPause();
-                }
-            }
-
-        });
     }
 
     @OnClick(R.id.asigner)
     void setAsigner() {
         new SetAsignerDialog.Builder(this).setSetAsignerDialog(new SetAsignerDialog.SetAsignerFinishListener() {
-
             @Override
             public void onSetAsignerSuccess(String name, int count) {
                 asignerTv.setText(name + ":" + count);
@@ -185,4 +145,19 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
         GSYVideoManager.releaseAllVideos();
     }
 
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onMessage(EventBusMessage event) {
+        switch (event.getCode()) {
+            case HOMEACTIVITY_INIT_ASIGNER_TV:
+                initAsignerTv();
+                break;
+            case HOMEACTIVITY_ADD_SUBSCRIBTION:
+                if (event.getMsg() instanceof Subscription) {
+                    addSubscription((Subscription) event.getMsg());
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }

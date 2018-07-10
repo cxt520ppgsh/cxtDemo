@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.lukou.publishervideo.app.MainApplication;
 import com.lukou.publishervideo.di.component.AppComponent;
+import com.lukou.publishervideo.utils.EventBusUtils;
 
 import javax.inject.Inject;
 
@@ -27,6 +28,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends Activity imp
         mCompositeSubscription = new CompositeSubscription();
         ComponentInject(((MainApplication) getApplication()).getAppComponent());
         mPresenter.onStart();
+        EventBusUtils.register(this);
     }
 
     @Override
@@ -37,6 +39,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends Activity imp
             mCompositeSubscription.unsubscribe();
             mCompositeSubscription = null;
         }
+        EventBusUtils.unregister(this);
         super.onDestroy();
     }
 

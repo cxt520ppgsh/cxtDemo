@@ -29,7 +29,7 @@ public class ApiFactory extends BasePandaHackerHttpService {
     }
 
     public static synchronized ApiFactory getInstance() {
-        if (apiFactory == null) {
+        if (apiFactory == null || apiService == null) {
             HttpParams httpParams = new HttpParams.Builder(BuildConfig.baseUrl)
                     .interceptor(new HeaderInterceptor())
                     //.interceptor(new HttpsScopeInterceptor())

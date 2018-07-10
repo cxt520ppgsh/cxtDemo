@@ -30,7 +30,6 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
     private SwipeRefreshLayout swipeRefreshLayout;
     Context context;
     List<T> list = new ArrayList<>();
-    private LoadFinishEndListener loadFinishEndListener;
 
     public BaseRecycleViewAdapter(Context context) {
         this.context = context;
@@ -70,25 +69,17 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
         });
     }
 
-    public void setLoadFinishEndListener(LoadFinishEndListener loadFinishEndListener) {
-        this.loadFinishEndListener = loadFinishEndListener;
-    }
-
     public void setList(List list) {
         this.list = list;
         if (!isRefresh) {
             notifyDataSetChanged();
-            if (loadFinishEndListener != null) {
-                loadFinishEndListener.onRefreshFinish();
-            }
+            onRefreshFinish();
         } else {
             new Handler().postDelayed(() -> {
                 swipeRefreshLayout.setRefreshing(false);
                 isRefresh = false;
                 notifyDataSetChanged();
-                if (loadFinishEndListener != null) {
-                    loadFinishEndListener.onRefreshFinish();
-                }
+                onRefreshFinish();
             }, 500);
         }
     }
@@ -101,9 +92,7 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
             new Handler().postDelayed(() -> {
                 isLoading = false;
                 notifyItemRemoved(getItemCount());
-                if (loadFinishEndListener != null) {
-                    loadFinishEndListener.onLoadNextFinish();
-                }
+                onLoadMoreFinish();
             }, 500);
         } else {
             notifyDataSetChanged();
@@ -171,17 +160,19 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<Rec
 
     public abstract void loadMore();
 
+    public void onRefreshFinish() {
+
+    }
+
+    public void onLoadMoreFinish() {
+
+    }
+
     private class FootViewHolder extends RecyclerView.ViewHolder {
 
         public FootViewHolder(View view) {
             super(view);
         }
-    }
-
-    public interface LoadFinishEndListener {
-        void onRefreshFinish();
-
-        void onLoadNextFinish();
     }
 }
 
