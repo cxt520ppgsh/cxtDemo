@@ -112,7 +112,12 @@ public class MyVideoView extends StandardGSYVideoPlayer implements MyVideoViewCo
     public void seekto(float per) {
         seekBarFollow();
         long position = (long) ((float) (getDuration() * per + getCurrentPositionWhenPlaying()));
-        position = position < 9000 ? 9000 : position;
+        seekTo(position);
+    }
+
+    @Override
+    public void seekto(long position) {
+        seekBarFollow();
         seekTo(position);
     }
 
@@ -190,7 +195,6 @@ public class MyVideoView extends StandardGSYVideoPlayer implements MyVideoViewCo
                 } else {
                     MyVideoView.this.seekto(position);
                 }
-
             }
         });
     }

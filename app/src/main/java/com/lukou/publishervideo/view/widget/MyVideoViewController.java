@@ -11,6 +11,8 @@ public interface MyVideoViewController {
 
     void seekto(float per);
 
+    void seekto(long per);
+
     void pause();
 
     void stop();
