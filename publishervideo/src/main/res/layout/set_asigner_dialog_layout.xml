@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main_dialog_solid"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_huge_56"
+        android:paddingLeft="@dimen/margin_medium_20"
+        android:paddingRight="@dimen/margin_medium_20"
+        android:paddingTop="@dimen/margin_medium">
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/asigner_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_very_small"
+            android:layout_marginRight="@dimen/margin_very_small"
+            android:layout_marginTop="@dimen/margin_medium"
+            app:alignContent="flex_start"
+            app:alignItems="flex_start"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:justifyContent="space_between" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancel_btn"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:background="@drawable/main_dialog_bottombar_solid"
+                android:text="取消"
+                android:textColor="@color/text_gray_k2"
+                android:textSize="@dimen/text_large" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/confirm_btn"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/main_dialog_bottombar_solid2"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_large" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

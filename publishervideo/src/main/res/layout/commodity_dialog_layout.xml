@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/main_dialog_solid"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_30_dp"
+        android:paddingTop="@dimen/margin_30_dp">
+
+        <TextView
+            android:id="@+id/publisher_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium_24"
+            android:layout_marginRight="@dimen/margin_medium_24"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/margin_medium_14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/margin_medium_10"
+            android:layout_marginLeft="@dimen/margin_medium_20"
+            android:layout_marginRight="@dimen/margin_medium_20"
+            android:layout_marginTop="@dimen/margin_medium_10"
+            android:background="@color/divider_k"
+            android:padding="0dp"></View>
+
+        <TextView
+            android:id="@+id/publisher_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium_24"
+            android:layout_marginRight="@dimen/margin_medium_24"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/margin_medium_14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/margin_medium_10"
+            android:layout_marginLeft="@dimen/margin_medium_20"
+            android:layout_marginRight="@dimen/margin_medium_20"
+            android:layout_marginTop="@dimen/margin_medium_10"
+            android:background="@color/divider_k"
+            android:padding="0dp"></View>
+
+        <TextView
+            android:id="@+id/play_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium_24"
+            android:layout_marginRight="@dimen/margin_medium_24"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/margin_medium_14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/margin_medium_10"
+            android:layout_marginLeft="@dimen/margin_medium_20"
+            android:layout_marginRight="@dimen/margin_medium_20"
+            android:layout_marginTop="@dimen/margin_medium_10"
+            android:background="@color/divider_k"
+            android:padding="0dp"></View>
+
+        <TextView
+            android:id="@+id/play_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium_24"
+            android:layout_marginRight="@dimen/margin_medium_24"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/margin_medium_14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/margin_medium_10"
+            android:layout_marginLeft="@dimen/margin_medium_20"
+            android:layout_marginRight="@dimen/margin_medium_20"
+            android:layout_marginTop="@dimen/margin_medium_10"
+            android:background="@color/divider_k"
+            android:padding="0dp"></View>
+
+        <TextView
+            android:id="@+id/delete_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium_24"
+            android:layout_marginRight="@dimen/margin_medium_24"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/margin_medium_14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/margin_medium_10"
+            android:layout_marginLeft="@dimen/margin_medium_20"
+            android:layout_marginRight="@dimen/margin_medium_20"
+            android:layout_marginTop="@dimen/margin_medium_10"
+            android:background="@color/divider_k"
+            android:padding="0dp"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_30_dp">
+
+            <TextView
+                android:id="@+id/never_watch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/margin_30_dp"
+                android:text="不再监测"
+                android:textColor="@color/text_gray_k"
+                android:textSize="@dimen/text_large" />
+
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_30_dp"
+                android:text="返回"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_large" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

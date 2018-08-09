@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <com.lukou.publishervideo.view.widget.VideoRecycleView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.lukou.publishervideo.view.widget.VideoRecycleView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <com.lukou.base.widget.TextImageView
+        android:id="@+id/asigner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium_20"
+        android:drawablePadding="@dimen/margin_small"
+        android:drawableRight="@drawable/switch_bt"
+        android:gravity="center"
+        android:text="请设置审核人"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_large"
+        app:drawableRightHeight="14dp"
+        app:drawableRightWidth="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
+
+</layout>

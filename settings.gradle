@@ -1,1 +1,1 @@
-include ':app'
+include ':publishervideo', ':base', ':app'
