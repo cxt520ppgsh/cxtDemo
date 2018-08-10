@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.lukou.base.app.BaseApplication;
-import com.lukou.base.di.module.AppComponent;
 import com.lukou.base.utils.EventBusUtils;
 
 import javax.inject.Inject;

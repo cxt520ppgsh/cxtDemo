@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.lukou.base.arouter.module.appmodule.AppModuleService;
 import com.lukou.base.bean.EventBusMessage;
 import com.lukou.base.ui.BaseActivity;
 import com.lukou.base.utils.SharedPreferencesUtil;

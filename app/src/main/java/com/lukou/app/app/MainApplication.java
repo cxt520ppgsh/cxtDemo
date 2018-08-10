@@ -1,8 +1,6 @@
 package com.lukou.app.app;
 
-import android.app.Application;
-
-import com.lukou.base.app.BaseApplication;
+import com.lukou.base.application.BaseApplication;
 import com.lukou.publishervideo.app.PublisherVideoApplication;
 
 /**

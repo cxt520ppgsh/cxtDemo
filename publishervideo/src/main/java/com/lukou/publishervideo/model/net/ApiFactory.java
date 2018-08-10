@@ -4,11 +4,10 @@ import rx.Observable;
 
 import com.lidao.httpmodule.http.base.HttpParams;
 import com.lukou.base.BuildConfig;
-import com.lukou.base.app.BaseApplication;
+import com.lukou.base.application.BaseApplication;
 import com.lukou.base.http.BasePandaHackerHttpService;
 import com.lukou.base.http.HeaderInterceptor;
 import com.lukou.base.http.PandaHackerHttpResult;
-import com.lukou.publishervideo.app.PublisherVideoApplication;
 import com.lukou.publishervideo.model.bean.Asiginer;
 import com.lukou.publishervideo.model.bean.PublisherVideo;
 

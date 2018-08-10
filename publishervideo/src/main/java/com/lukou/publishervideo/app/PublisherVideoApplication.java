@@ -1,8 +1,8 @@
 package com.lukou.publishervideo.app;
 
-import android.app.Application;
-
-import com.lukou.base.app.BaseApplication;
+import com.lukou.base.application.BaseApplication;
+import com.lukou.base.arouter.module.appmodule.AppModuleService;
+import com.lukou.base.di.module.AppModule;
 import com.lukou.publishervideo.di.component.DaggerPublisherVideoComponent;
 import com.lukou.publishervideo.di.component.PublisherVideoComponent;
 import com.lukou.publishervideo.di.module.NetModule;
@@ -14,6 +14,8 @@ public class PublisherVideoApplication {
 
     public static void init() {
         initComponnent();
+        //Arouter模块调用
+        AppModuleService.appStart();
     }
 
     public static PublisherVideoApplication instance() {

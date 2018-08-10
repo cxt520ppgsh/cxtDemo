@@ -28,7 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.lukou.base.BuildConfig;
 import com.lukou.base.R;
-import com.lukou.base.app.BaseApplication;
+import com.lukou.base.application.BaseApplication;
 
 import java.io.File;
 import java.io.FileInputStream;

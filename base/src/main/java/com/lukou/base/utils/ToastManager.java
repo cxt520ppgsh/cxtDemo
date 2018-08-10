@@ -2,16 +2,13 @@ package com.lukou.base.utils;
 
 import android.support.annotation.StringRes;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.lukou.base.R;
-import com.lukou.base.app.BaseApplication;
-
-import org.w3c.dom.Text;
+import com.lukou.base.application.BaseApplication;
 
 import java.lang.ref.WeakReference;
 
