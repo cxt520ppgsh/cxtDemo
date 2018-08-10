@@ -1,30 +1,30 @@
 package com.lukou.publishervideo.app;
 
+import android.app.Application;
+
 import com.lukou.base.app.BaseApplication;
 import com.lukou.publishervideo.di.component.DaggerPublisherVideoComponent;
 import com.lukou.publishervideo.di.component.PublisherVideoComponent;
 import com.lukou.publishervideo.di.module.NetModule;
 
-public class PublisherVideoApplication extends BaseApplication {
+public class PublisherVideoApplication {
     private static PublisherVideoApplication instance;
-    private PublisherVideoComponent publisherVideoComponent;
+    private static PublisherVideoComponent publisherVideoComponent;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
+
+    public static void init() {
         initComponnent();
     }
 
     public static PublisherVideoApplication instance() {
         if (instance == null) {
-            throw new RuntimeException("Application is not initialized");
+            instance = new PublisherVideoApplication();
         }
         return instance;
     }
 
 
-    private void initComponnent() {
+    private static void initComponnent() {
         publisherVideoComponent = DaggerPublisherVideoComponent.builder()
                 .appComponent(BaseApplication.instance().getAppComponent())
                 .netModule(new NetModule())

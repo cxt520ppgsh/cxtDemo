@@ -18,8 +18,7 @@
         tools:replace="android:name">
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_activity_splash">
+            android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

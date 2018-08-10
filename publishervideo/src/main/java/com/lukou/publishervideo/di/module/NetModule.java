@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.lidao.httpmodule.http.BaseHttpService;
 import com.lidao.httpmodule.http.base.HttpParams;
 import com.lukou.base.BuildConfig;
+import com.lukou.base.app.BaseApplication;
 import com.lukou.publishervideo.app.PublisherVideoApplication;
 import com.lukou.publishervideo.di.scope.PublisherVideoApplicationScope;
 import com.lukou.publishervideo.model.net.ApiService;
@@ -40,7 +41,7 @@ public class NetModule {
                 .interceptor(new HeaderInterceptor())
                 //.interceptor(new HttpsScopeInterceptor())
                 .build();
-        return BaseHttpService.getRetrofit(PublisherVideoApplication.instance(), httpParams, BuildConfig.DEBUG).create(ApiService.class);
+        return BaseHttpService.getRetrofit(BaseApplication.instance(), httpParams, BuildConfig.DEBUG).create(ApiService.class);
     }
 }
 

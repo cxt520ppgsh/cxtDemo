@@ -4,6 +4,7 @@ import rx.Observable;
 
 import com.lidao.httpmodule.http.base.HttpParams;
 import com.lukou.base.BuildConfig;
+import com.lukou.base.app.BaseApplication;
 import com.lukou.base.http.BasePandaHackerHttpService;
 import com.lukou.base.http.HeaderInterceptor;
 import com.lukou.base.http.PandaHackerHttpResult;
@@ -26,7 +27,7 @@ public class ApiFactory extends BasePandaHackerHttpService {
 
     @Inject
     public ApiFactory(ApiService apiService) {
-        super(PublisherVideoApplication.instance());
+        super(BaseApplication.instance());
         this.apiService = apiService;
     }
 
@@ -36,7 +37,7 @@ public class ApiFactory extends BasePandaHackerHttpService {
                     .interceptor(new HeaderInterceptor())
                     //.interceptor(new HttpsScopeInterceptor())
                     .build();
-            apiService = BasePandaHackerHttpService.getRetrofit(PublisherVideoApplication.instance(), httpParams, BuildConfig.DEBUG).create(ApiService.class);
+            apiService = BasePandaHackerHttpService.getRetrofit(BaseApplication.instance(), httpParams, BuildConfig.DEBUG).create(ApiService.class);
             apiFactory = new ApiFactory(apiService);
         }
         return apiFactory;
