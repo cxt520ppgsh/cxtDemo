@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.lukou.base.utils.ScreenUtil;
 import com.lukou.publishervideo.view.adapter.HomeRvAdapter;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
 /**
  * Created by cxt on 2018/6/18.
@@ -99,6 +100,26 @@ public class VideoRecycleView extends RecyclerView {
 
     public static int getCurrentPosition() {
         return currentPosition;
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                dowxY = ev.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                dy = ev.getY() - dowxY;
+                if (Math.abs(dy) >= 5) {
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            default:
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
     }
 
     @Override

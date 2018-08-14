@@ -1,8 +1,9 @@
 package com.lukou.publishervideo.model.net;
 
-import com.lukou.base.http.PandaHackerHttpResult;
 import com.lukou.publishervideo.model.bean.Asiginer;
 import com.lukou.publishervideo.model.bean.PublisherVideo;
+
+import java.util.List;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -18,14 +19,14 @@ import rx.Observable;
 public interface ApiService {
 
     @GET("publisher/video")
-    Observable<PandaHackerHttpResult<PublisherVideo>> getPublisherVideo(@Query("delete_type") int delete_type,
-                                                                        @Query("video_type") int video_type,
-                                                                        @Query("asigner") String asigner);
+    Observable<PublisherVideoHttpResult<List<PublisherVideo>>> getPublisherVideo(@Query("delete_type") int delete_type,
+                                                                                @Query("video_type") int video_type,
+                                                                                @Query("asigner") String asigner);
 
     @GET("publisher/video/asign")
-    Observable<PandaHackerHttpResult<Asiginer>> getAsigner();
+    Observable<PublisherVideoHttpResult<List<Asiginer>>> getAsigner();
 
     @FormUrlEncoded
     @POST("publisher/video")
-    Observable<PandaHackerHttpResult> setTag(@Field("fid") String fid, @Field("type") int type);
+    Observable<PublisherVideoHttpResult> setTag(@Field("fid") String fid, @Field("type") int type);
 }

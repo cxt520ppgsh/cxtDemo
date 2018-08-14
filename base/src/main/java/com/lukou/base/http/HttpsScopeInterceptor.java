@@ -2,7 +2,6 @@ package com.lukou.base.http;
 
 import android.text.TextUtils;
 
-
 import com.lukou.base.BuildConfig;
 
 import java.io.IOException;

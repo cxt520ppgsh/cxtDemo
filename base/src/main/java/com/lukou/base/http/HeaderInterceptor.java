@@ -2,6 +2,8 @@ package com.lukou.base.http;
 
 
 
+import android.os.Environment;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -20,8 +22,17 @@ public class HeaderInterceptor implements Interceptor {
         Request.Builder builder = original.newBuilder()
                 .method(original.method(), original.body());
         try {
-           // builder.header("Cookie", "Hm_lvt_0dc0a76120f8a45eb79b870f4f425c8e=1528794937; user=\"2|1:0|10:1528795049|4:user|12:MTQ2MzY5MQ==|6c6036d423d45ba2a0bf28760ff78b313591797bcc8d2cf7cdcaec018e70c2d3");
-
+            //todo
+          /*  builder.header("x-device", "android")
+                    .addHeader("x-platform", "app")
+                    .addHeader("token", LibApplication.instance().accountService().token())
+                    .addHeader("x-app-version", Environment.versionCodeStr())
+                    .addHeader("x-source", Environment.source())
+                    .addHeader("x-os-version", android.os.Build.VERSION.RELEASE)
+                    .addHeader("x-bundle-id", Environment.getAppId())
+                    .addHeader("x-model", android.os.Build.MODEL)
+                    .addHeader("x-user-group", String.valueOf(LibApplication.instance().configService().userGroup().type()))
+                    .addHeader("x-device-id", LibApplication.instance().configService().deviceId());*/
         } catch (Exception e) {
             e.printStackTrace();
         }

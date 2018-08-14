@@ -12,7 +12,7 @@ public class PublisherVideoApplication {
     private static PublisherVideoComponent publisherVideoComponent;
 
 
-    public static void init() {
+    public void init() {
         initComponnent();
         //Arouter模块调用
         AppModuleService.appStart();
@@ -26,7 +26,7 @@ public class PublisherVideoApplication {
     }
 
 
-    private static void initComponnent() {
+    private void initComponnent() {
         publisherVideoComponent = DaggerPublisherVideoComponent.builder()
                 .appComponent(BaseApplication.instance().getAppComponent())
                 .netModule(new NetModule())
