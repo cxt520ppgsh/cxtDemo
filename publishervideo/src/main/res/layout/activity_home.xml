@@ -12,13 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <com.lukou.publishervideo.view.widget.VideoRecycleView
+    <com.flyaudio.publishervideo.view.widget.VideoRecycleView
         android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.lukou.publishervideo.view.widget.VideoRecycleView>
+        android:layout_height="match_parent"></com.flyaudio.publishervideo.view.widget.VideoRecycleView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <com.lukou.base.widget.TextImageView
+    <com.flyaudio.base.widget.TextImageView
         android:id="@+id/asigner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lukou.publishervideo">
+    package="com.flyaudio.publishervideo">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,12 +8,12 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".app.PublisherVideoApplication"
+        android:name="com.flyaudio.publishervideo.app.PublisherVideoApplication"
         android:allowBackup="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.activity.HomeActivity"
+            android:name="com.flyaudio.publishervideo.view.activity.HomeActivity"
             android:configChanges="orientation|keyboardHidden">
         </activity>
 
