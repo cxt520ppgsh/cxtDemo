@@ -1,1 +1,1 @@
-include ':publishervideo', ':base', ':app'
+include ':publishervideo', ':base', ':app', ':packagemanager'

@@ -1,6 +1,7 @@
 package com.flyaudio.app.app;
 
 import com.flyaudio.base.application.BaseApplication;
+import com.flyaudio.packagemanager.app.PackageManagerApplication;
 import com.flyaudio.publishervideo.app.PublisherVideoApplication;
 
 /**
@@ -12,5 +13,6 @@ public class MainApplication extends BaseApplication{
     public void onCreate() {
         super.onCreate();
         PublisherVideoApplication.instance().init();
+        PackageManagerApplication.instance().init();
     }
 }
